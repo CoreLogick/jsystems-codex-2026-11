@@ -2,7 +2,7 @@
 
 ## Project
 
-This is a **course project** for the "COURSE-NAME" training organized by COURSE-ORGANIZER, COURSE-DURATION (COURSE-DATES), remote on cloud VMs. The primary taught agent is OpenAI Codex CLI, with Claude Code and GitHub Copilot as covered alternatives. The group selects the actual application and change. Greenfield work starts from the empty scaffold and defines the product live; legacy work uses a separate clone of the original application. Its domain, stack and architecture come from the real task and inspected sources, not historical course examples: research → application or feature PRD → ADR → implementation with agents.
+This is a **course project** for the "Codex - od zera do zespołu agentów AI" training organized by JSystems, 3 days (4-6.11.2026), remote on cloud VMs. The primary taught agent is OpenAI Codex (CLI, desktop app, IDE extension, Codex Cloud), with Claude Code as a comparison. The course project is an AI Chat application (TypeScript, Vercel AI SDK on backend and frontend, streaming, React `useChat`) built in `app/`; participants may choose their own idea with the same process. Greenfield work starts from the empty scaffold and defines the product live; legacy work uses a separate clone of the original application. Its domain, stack and architecture come from the real task and inspected sources, not historical course examples: research → application or feature PRD → ADR → implementation with agents.
 
 This is only the **base starting repository** for the course; concrete decisions are made live with the group.
 

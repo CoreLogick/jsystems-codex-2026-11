@@ -1,18 +1,18 @@
-# COURSE-NAME (COURSE-ORGANIZER)
+# Codex - od zera do zespołu agentów AI (JSystems)
 
-**Materiały szkoleniowe: [devpowers.com/szkolenia/COURSE-SITE](https://devpowers.com/szkolenia/COURSE-SITE/)**
+**Materiały szkoleniowe: [devpowers.com/szkolenia/jsystems/codex-2026-11](https://devpowers.com/szkolenia/jsystems/codex-2026-11/)**
 
-- [Zakres i wszystkie materiały](https://devpowers.com/szkolenia/COURSE-SITE/index.html#prezentacje)
-- [Slajdy](https://devpowers.com/szkolenia/COURSE-SITE/index.html#prezentacje)
-- [Biblioteka promptów](https://devpowers.com/szkolenia/COURSE-SITE/prompty.html) · [Ćwiczenia](https://devpowers.com/szkolenia/COURSE-SITE/cwiczenia.html) · [Checklisty](https://devpowers.com/szkolenia/COURSE-SITE/checklisty.html) · [Słownik AI](https://devpowers.com/szkolenia/COURSE-SITE/slownik-ai.html)
-- [Wyniki ankiety przed szkoleniem](https://devpowers.com/szkolenia/COURSE-SITE/raport-przed.html) · [Odpowiedzi na pytania z kursu](https://devpowers.com/szkolenia/COURSE-SITE/pytania.html) (uzupełniamy po każdym dniu)
+- [Zakres i wszystkie materiały](https://devpowers.com/szkolenia/jsystems/codex-2026-11/index.html#prezentacje)
+- [Slajdy](https://devpowers.com/szkolenia/jsystems/codex-2026-11/index.html#prezentacje)
+- [Biblioteka promptów](https://devpowers.com/szkolenia/jsystems/codex-2026-11/prompty.html) · [Ćwiczenia](https://devpowers.com/szkolenia/jsystems/codex-2026-11/cwiczenia.html) · [Checklisty](https://devpowers.com/szkolenia/jsystems/codex-2026-11/checklisty.html) · [Słownik AI](https://devpowers.com/szkolenia/jsystems/codex-2026-11/slownik-ai.html)
+- [Wyniki ankiety przed szkoleniem](https://devpowers.com/szkolenia/jsystems/codex-2026-11/raport-przed.html) · [Odpowiedzi na pytania z kursu](https://devpowers.com/szkolenia/jsystems/codex-2026-11/pytania.html) (uzupełniamy po każdym dniu)
 
 
-Repozytorium uczestnika szkolenia COURSE-ORGANIZER (COURSE-DATES, online, 09:00-16:00). W czasie szkolenia (COURSE-DURATION) przechodzimy pełny cykl wytwarzania oprogramowania z agentami AI: od pomysłu i wymagań (PRD), przez decyzje architektoniczne (ADR), plan, implementację i testy, po code review, bezpieczeństwo i CI/CD.
+Repozytorium uczestnika szkolenia otwartego JSystems (4-6.11.2026, online, 09:00-16:00). W czasie szkolenia (3 dni) przechodzimy pełny cykl wytwarzania oprogramowania z agentami AI: od pomysłu i wymagań (PRD), przez decyzje architektoniczne (ADR), plan, implementację i testy, po code review, bezpieczeństwo i CI/CD.
 
-Głównym agentem warsztatu jest **OpenAI Codex CLI**, a te same koncepcje pokazujemy także w **Claude Code** i **GitHub Copilot**. Możesz pracować w swoim stosie (np. C# / .NET, Java, Python); przykład prowadzącego powstaje w TypeScript.
+Głównym narzędziem warsztatu jest **OpenAI Codex**: CLI, aplikacja desktopowa, rozszerzenie IDE i Codex Cloud. Na koniec porównujemy go z **Claude Code**. Przykład prowadzącego powstaje w TypeScript; możesz pracować w swoim stosie.
 
-Głównym projektem grupy jest aplikacja do obsługi zwrotów i reklamacji elektroniki, rozwijana według PRD uzgodnionego podczas zajęć. Możesz też pracować nad własnym pomysłem, stosując ten sam proces. Po PRD omów architekturę i biblioteki, zapisz decyzje w ADR, ułóż plan i zależności zadań, a potem implementuj, testuj i przeglądaj zmiany przed utworzeniem PR. Przykładowy prompt PRD w `course-materials/` nie zastępuje dokumentu poprawionego z grupą.
+Głównym projektem grupy jest **AI Chat**: prosta aplikacja czatu z backendem i frontendem w TypeScript, zbudowana na **Vercel AI SDK** (streaming odpowiedzi, `useChat` w React), rozwijana według PRD uzgodnionego podczas zajęć. Aplikację budujesz w `app/` na własnej gałęzi swojego forka, z zespołem podagentów (backend, frontend, QA) i metodą TDD. Możesz też pracować nad własnym pomysłem, stosując ten sam proces. Po PRD omów architekturę i biblioteki, zapisz decyzje w ADR, ułóż plan i zależności zadań, a potem implementuj, testuj i przeglądaj zmiany przed utworzeniem PR. Przykładowy prompt PRD w `course-materials/` nie zastępuje dokumentu poprawionego z grupą.
 
 ## Biblioteka dodatkowa
 
@@ -22,7 +22,7 @@ W bibliotece znajdują się również **archiwalne materiały z wcześniejszego 
 
 Wybierz materiał do zadania:
 
-- **Prompty i planowanie:** [PRD](course-materials/Prompt%20examples/PRD-electronics-returns-complains-app.md), [ADR](course-materials/Prompt%20examples/ADR-generation-typescript-vercel-ai-sdk.md), [plan implementacji](course-materials/Prompt%20examples/Plan-SubAgents-matrix-dependency-map.md), [propozycja skilla planowania](https://github.com/EdukeyTeam/agent-toolbox/pull/28) (otwarty PR).
+- **Prompty i planowanie:** [PRD (przykład z innej aplikacji)](course-materials/Prompt%20examples/PRD-electronics-returns-complains-app.md), [ADR](course-materials/Prompt%20examples/ADR-generation-typescript-vercel-ai-sdk.md), [plan implementacji](course-materials/Prompt%20examples/Plan-SubAgents-matrix-dependency-map.md), [propozycja skilla planowania](https://github.com/EdukeyTeam/agent-toolbox/pull/28) (otwarty PR).
 - **Konfiguracje agentów:** [ustawienia, uprawnienia, profile i skróty Bash/PowerShell](course-materials/agent-configs/).
 - **Hooki i zgody:** [ochrona plików i przykłady hooków](course-materials/hooks-example/), [Context7](course-materials/hooks-example/context7/), [permissions a hooki](course-materials/hooks-example/context7/permissions-vs-hooks.md).
 - **CI/CD i code review:** [przegląd przykładów](course-materials/cicd-headless/), [agent review dla różnych CI](course-materials/cicd-headless/agent-review/), [PR-Agent i Qodo](course-materials/cicd-headless/PR-Agent-Qodo/), [Codex i Bitbucket](course-materials/cicd-headless/codex-bitbucket/).
