@@ -5,7 +5,7 @@
 
 /write-adr create ADR documents based on @docs/PRD.md
 
-Make research how to implement functionalities from PRD using the below libraries:
+Research how to implement the functionality described in the PRD using the libraries below:
 https://github.com/vercel/ai
 https://ai-sdk.dev/docs
 
