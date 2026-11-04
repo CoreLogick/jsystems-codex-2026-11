@@ -112,7 +112,7 @@ Wiadomości publiczne w kolejności chronologicznej. Reakcje oznaczają zliczeni
 
 - **12:20 — Łukasz Matuszewski:** codex resume
 
-- **12:22 — Łukasz Matuszewski:** Under-development features enabled: prefer_mxc. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in D:\AI\labuser\.codex\config.toml.
+- **12:22 — Łukasz Matuszewski:** Under-development features enabled: prefer_mxc. Under-development features are incomplete and may behave unpredictably. To suppress this warning, set `suppress_unstable_features_warning = true` in `D:\AI\labuser\.codex\config.toml`.
 
 - **12:24 — Łukasz Matuszewski:** /permissions
 
