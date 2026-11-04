@@ -1,3 +1,14 @@
+# UPDATES !!!
+
+## Po dniu 1 (4.11)
+
+- Projekt zaczniemy od wyboru pomysłu, PRD, ADR i planu; kodu aplikacji jeszcze nie ma.
+- Dzień 1: [podsumowanie](course-materials/zoom-summary-chat-history/day-1-summary.md) i [historia czatu](course-materials/zoom-summary-chat-history/day-1-chat-history.md).
+- [Przykład PRD z modelem decyzyjnym](course-materials/Prompt%20examples/PRD-electronics-returns-decision-model-app.md) i [prompt do ADR](course-materials/Prompt%20examples/ADR-generation-typescript-vercel-ai-sdk-decisions.md) rozwijają zwykły formularz i chat o wstępną ocenę danych.
+- [Tryb głosowy Codex i aplikacji desktopowej a Handy](course-materials/Research/codex-voice-queue-enterprise-chat-credits-2026-10-30.md#3-voice-dictation-and-local-transcription).
+
+---
+
 # Codex - od zera do zespołu agentów AI (JSystems)
 
 **Materiały szkoleniowe: [devpowers.com/szkolenia/jsystems/codex-2026-11](https://devpowers.com/szkolenia/jsystems/codex-2026-11/)**
