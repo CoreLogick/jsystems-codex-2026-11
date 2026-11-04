@@ -1,9 +1,21 @@
-# Stan narzędzi do sprawdzenia przed zajęciami
+# Codex i AI SDK - sprawdzone fakty
 
-Zweryfikowano 26.09.2026. Dostęp zależy od planu i polityki organizacji; ten plik nie potwierdza uprawnień uczestników.
+Sprawdzono 04.11.2026 na `codex-cli 0.166.0`. Aplikacja w `app/` powstanie podczas zajęć; nie ma jeszcze zainstalowanych pakietów ani ustalonego frameworka. Dostęp do modeli i usług zależy od konta oraz polityki organizacji.
 
-- GitHub Copilot cloud agent może pracować nad issue i przygotować pull request do przeglądu. W organizacjach Business dostęp do niego może wymagać włączenia przez administratora. Zobacz [cloud agent access](https://docs.github.com/en/copilot/concepts/enterprise/cloud-agent-access) i [użycie agentów](https://docs.github.com/en/copilot/how-tos/use-copilot-agents).
-- Instrukcje repozytorium `.github/copilot-instructions.md` są podstawą kontekstu tego ćwiczenia. Obsługa `AGENTS.md` i innych formatów zależy od powierzchni Copilot; [macierz obsługi instrukcji](https://docs.github.com/en/copilot/reference/custom-instructions-support) wymaga sprawdzenia dla VS Code, JetBrains, GitHub.com i CLI osobno.
-- [Prompt files](https://docs.github.com/en/copilot/tutorials/customization-library/prompt-files/review-code) mogą przechowywać powtarzalny prompt review; lokalny przykład jest w `.github/prompts/`.
-- Funkcje chmurowe, MCP, CLI oraz licznik AI Credits zależą od planu i ustawień organizacji. Sprawdź [aktualny plan](https://docs.github.com/en/copilot/get-started/plans) i politykę organizacji. Samo włączenie wykluczenia treści nie jest dowodem, że każdy tryb IDE respektuje to ustawienie.
-- Lista umiejętności publicznego [EdukeyTeam/agent-toolbox](https://github.com/EdukeyTeam/agent-toolbox) została sprawdzona poleceniem `npx --yes skills@latest add EdukeyTeam/agent-toolbox --list`; wybór `write-adr` i lokalna instalacja projektowa w tymczasowym katalogu z `--agent github-copilot -y` zakończyły się powodzeniem. Aktywację w konkretnym IDE trzeba sprawdzić na maszynie uczestnika.
+## Codex CLI
+
+- `codex` otwiera tryb interaktywny; `codex exec` uruchamia zadanie bez interaktywnego interfejsu. `codex --help` potwierdza też `review`, `resume`, `fork`, `cloud` i `mcp`. `codex fork` dotyczy sesji agenta; fork repozytorium wykonujesz na GitHubie.
+- Konfiguracja projektu jest w `.codex/config.toml`. Domyślny `course-root` dziedziczy `course-workspace`: zapis w projekcie, włączona sieć, blokada odczytu wskazanych plików środowiska i sekretów. Zarządzana polityka i konfiguracja użytkownika mogą zmienić wynik; sprawdź efektywne uprawnienia na VM. [Dokumentacja konfiguracji](https://developers.openai.com/codex/config-reference).
+- `approval_policy = "on-request"` i `approvals_reviewer = "auto_review"` kierują kwalifikujące się prośby o zgodę do automatycznego recenzenta. Nie oznacza to ręcznego pytania uczestnika przy każdej operacji ani dowolnego dostępu do plików. [Opis recenzenta zgód](https://developers.openai.com/codex/config-reference).
+- `codex execpolicy check --rules .codex/rules/course.rules npm install` sprawdza reguły bez instalacji. Brak dopasowanej reguły oznacza, że komenda nadal podlega sandboxowi i polityce zgód. Prefiksy nie obejmują wszystkich aliasów i wariantów polecenia. [Reguły Codex](https://developers.openai.com/codex/rules).
+- `--strict-config` istnieje, ale w tej wersji nie działa z `debug`, `features`, `mcp` ani `execpolicy`. `codex app-server --strict-config --print-startup-config` sprawdza konfigurację startową bez sesji modelu; sam wynik nie dowodzi załadowania ustawień projektu. Odczyt `config/read` z `cwd` repozytorium potwierdził profil `course-root`, politykę zgód, serwery MCP i flagi projektu.
+- Context7 i Playwright MCP są początkowo wyłączone w konfiguracji Codex. Włączamy je podczas ćwiczenia. Codex korzysta z tabel `mcp_servers`; `.mcp.json` dotyczy innego klienta. Role podagentów dodajemy do `.codex/agents/` podczas zajęć. Nie kopiuj ustawień użytkownika ani kluczy do repozytorium.
+
+## Vercel AI SDK 7
+
+- Wersję wybieramy w ADR i sprawdzamy zgodność `ai`, `@ai-sdk/react` oraz providera przed instalacją. Nie mieszaj przykładów dla różnych głównych wersji SDK.
+- W SDK 7 `streamText` udostępnia `result.stream`. Odpowiedź dla UI tworzy się przez `toUIMessageStream({ stream: result.stream })` i `createUIMessageStreamResponse(...)`. Starsze `result.toUIMessageStreamResponse()` nadal działa w wersji 7, ale jest przestarzałe. Zmieniono też `system` na `instructions`, zachowując stary parametr jako przestarzały. [Migracja do SDK 7](https://ai-sdk.dev/docs/migration-guides/migration-guide-7-0).
+- React używa `useChat` z `@ai-sdk/react`, transportu `DefaultChatTransport` z `ai` i `sendMessage`. Stan formularza przechowujesz osobno; wiadomości renderujesz z `message.parts`. Na serwerze przekształcasz je przez `await convertToModelMessages(messages)`. [Czat i streaming](https://ai-sdk.dev/docs/ai-sdk-ui/chatbot).
+- Dla SDK 7 model testowy to `MockLanguageModelV4` z `ai/test`, a `simulateReadableStream` pochodzi z `ai`. Testy jednostkowe i integracyjne mogą działać bez wywołania providera i klucza. Pełne E2E z prawdziwym modelem wymaga konfiguracji serwerowej. [Testowanie SDK](https://ai-sdk.dev/docs/ai-sdk-core/testing).
+
+Źródła SDK sprawdzono również przez Context7, w dokumentacji wersji `/vercel/ai/ai_7.0.0`. Te fakty nie zastępują sprawdzenia faktycznie zainstalowanych wersji podczas tworzenia aplikacji.

@@ -4,8 +4,8 @@
 
 - [Zakres i wszystkie materiały](https://devpowers.com/szkolenia/jsystems/codex-2026-11/index.html#prezentacje)
 - [Slajdy](https://devpowers.com/szkolenia/jsystems/codex-2026-11/index.html#prezentacje)
-- [Biblioteka promptów](https://devpowers.com/szkolenia/jsystems/codex-2026-11/prompty.html) · [Ćwiczenia](https://devpowers.com/szkolenia/jsystems/codex-2026-11/cwiczenia.html) · [Checklisty](https://devpowers.com/szkolenia/jsystems/codex-2026-11/checklisty.html) · [Słownik AI](https://devpowers.com/szkolenia/jsystems/codex-2026-11/slownik-ai.html)
-- [Wyniki ankiety przed szkoleniem](https://devpowers.com/szkolenia/jsystems/codex-2026-11/raport-przed.html) · [Odpowiedzi na pytania z kursu](https://devpowers.com/szkolenia/jsystems/codex-2026-11/pytania.html) (uzupełniamy po każdym dniu)
+- [Biblioteka promptów](https://devpowers.com/szkolenia/jsystems/codex-2026-11/prompty.html) | [Ćwiczenia](https://devpowers.com/szkolenia/jsystems/codex-2026-11/cwiczenia.html) | [Checklisty](https://devpowers.com/szkolenia/jsystems/codex-2026-11/checklisty.html) | [Słownik AI](https://devpowers.com/szkolenia/jsystems/codex-2026-11/slownik-ai.html)
+- [Wyniki ankiety przed szkoleniem](https://devpowers.com/szkolenia/jsystems/codex-2026-11/raport-przed.html) | [Odpowiedzi na pytania z kursu](https://devpowers.com/szkolenia/jsystems/codex-2026-11/pytania.html) (uzupełniamy po każdym dniu)
 
 
 Repozytorium uczestnika szkolenia otwartego JSystems (4-6.11.2026, online, 09:00-16:00). W czasie szkolenia (3 dni) przechodzimy pełny cykl wytwarzania oprogramowania z agentami AI: od pomysłu i wymagań (PRD), przez decyzje architektoniczne (ADR), plan, implementację i testy, po code review, bezpieczeństwo i CI/CD.
@@ -13,6 +13,36 @@ Repozytorium uczestnika szkolenia otwartego JSystems (4-6.11.2026, online, 09:00
 Głównym narzędziem warsztatu jest **OpenAI Codex**: CLI, aplikacja desktopowa, rozszerzenie IDE i Codex Cloud. Na koniec porównujemy go z **Claude Code**. Przykład prowadzącego powstaje w TypeScript; możesz pracować w swoim stosie.
 
 Głównym projektem grupy jest **AI Chat**: prosta aplikacja czatu z backendem i frontendem w TypeScript, zbudowana na **Vercel AI SDK** (streaming odpowiedzi, `useChat` w React), rozwijana według PRD uzgodnionego podczas zajęć. Aplikację budujesz w `app/` na własnej gałęzi swojego forka, z zespołem podagentów (backend, frontend, QA) i metodą TDD. Możesz też pracować nad własnym pomysłem, stosując ten sam proces. Po PRD omów architekturę i biblioteki, zapisz decyzje w ADR, ułóż plan i zależności zadań, a potem implementuj, testuj i przeglądaj zmiany przed utworzeniem PR. Przykładowy prompt PRD w `course-materials/` nie zastępuje dokumentu poprawionego z grupą.
+
+## Start na maszynie Windows 11
+
+Utwórz [własny fork na GitHubie](https://github.com/LucasMatuszewski/jsystems-codex-2026-11/fork). W swoim forku kliknij **Code**, wybierz **HTTPS** i skopiuj adres. Otwórz PowerShell w katalogu, w którym chcesz trzymać projekt, i wykonaj kolejno:
+
+```powershell
+$forkUrl = Read-Host "Wklej adres HTTPS swojego forka"
+```
+
+```powershell
+git clone $forkUrl jsystems-codex-2026-11
+```
+
+```powershell
+Set-Location jsystems-codex-2026-11
+```
+
+```powershell
+git switch -c feat/ai-chat
+```
+
+```powershell
+codex
+```
+
+Codex uruchamiasz w katalogu głównym repozytorium. Przejrzyj komunikat zaufania do projektu i zaakceptuj przygotowane repozytorium. Wspólne ustawienia są w `.codex/config.toml`; domyślny profil `course-root` pozwala edytować projekt i korzystać z sieci, w tym instalować zależności. Zarządzana polityka maszyny może dodatkowo ograniczać dostęp.
+
+`app/` zawiera na razie tylko instrukcję. Podczas zajęć agent utworzy tam aplikację według PRD i ADR; dopiero wtedy instalujemy zależności i uruchamiamy komendy z jej `package.json`. Context7 i Playwright MCP są początkowo wyłączone w konfiguracji Codex. Włączymy je w ćwiczeniu MCP, a role `be-developer`, `fe-developer` i `qa-engineer` dodamy w ćwiczeniu podagentów. Codex czyta konfigurację MCP z `.codex/config.toml`; `.mcp.json` jest przykładem dla Claude Code.
+
+Testy jednostkowe i integracyjne AI SDK korzystają z syntetycznego modelu testowego, bez klucza API. Klucz serwerowy jest potrzebny do rozmowy z prawdziwym modelem i pełnego E2E. `.env.example` zawiera wyłącznie nazwy zmiennych; wartości i sposób ładowania środowiska ustalamy przy konfiguracji aplikacji. Nie wklejaj kluczy do rozmowy z agentem ani do plików śledzonych przez Git.
 
 ## Biblioteka dodatkowa
 

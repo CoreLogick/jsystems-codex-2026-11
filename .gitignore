@@ -1,11 +1,13 @@
 node_modules/
+.next/
+out/
 coverage/
 dist/
 build/
 *.db
-.env
-.env.*
+.env*
 !.env.example
+secrets
 .DS_Store
 .agents/skills/
 .claude/skills/
@@ -13,8 +15,22 @@ skills-lock.json
 __pycache__/
 *.pyc
 .playwright-cli
+playwright-report/
+test-results/
+playwright/.cache/
 
-# Private agent briefs and Java build artifacts
+# Local Codex history, credentials and runtime state; keep shared config and rules.
+.codex/auth.json
+.codex/sessions/
+.codex/archived_sessions/
+.codex/history.jsonl
+.codex/session_index.jsonl
+.codex/log/
+.codex/logs/
+.codex/tmp/
+.codex/*.sqlite*
+
+# Private agent briefs and archived Java build artifacts
 .agent-briefs/
 **/target/
 *.class

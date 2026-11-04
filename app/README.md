@@ -1,23 +1,23 @@
 # App
 
-This folder will contain the application built during the course.
+This folder will contain AI Chat, built during the course with TypeScript, React and the Vercel AI SDK on the server and client. It currently contains no application or package manifest. Participants may choose their own idea through the same process.
 
 ## How to start
 
 The app is scaffolded live during the course through a structured process:
 
-1. **Research** — use agents to research and validate the project idea
-2. **PRD** — generate a Product Requirements Document (`../docs/PRD.md`)
-3. **ADR** — generate Architecture Decision Records (`../docs/ADR/`) to choose the tech stack
-4. **Scaffold** — use the chosen boilerplate (`create-next-app`, AI SDK starter, Mastra, etc.)
-5. **Implement** — build features with agents using TDD
+1. **Research** - use agents to research and validate the project idea
+2. **PRD** - generate a Product Requirements Document (`../docs/PRD.md`)
+3. **ADR** - generate Architecture Decision Records (`../docs/ADR/`) to choose the tech stack
+4. **Scaffold** - choose an AI SDK starter compatible with the ADR (Next.js or Vite with a TypeScript backend)
+5. **Implement** - build features with agents using TDD
 
 ## Checklist
 
 Use this checklist during scaffolding. Some items are provided by the boilerplate (e.g. `create-next-app` ships `tsconfig.json`, ESLint config). Others you add explicitly.
 
 ### Project setup
-- [ ] Choose framework (Next.js, Express+Vite, Mastra, other) — record in ADR
+- [ ] Choose framework (Next.js or Vite with Hono/Express for the group project) - record in ADR
 - [ ] Initialize project (e.g. `npx create-next-app@latest` or equivalent)
 - [ ] TypeScript config (`tsconfig.json`)
 - [ ] Package manager chosen (npm / pnpm / bun)
@@ -38,9 +38,11 @@ Use this checklist during scaffolding. Some items are provided by the boilerplat
 - [ ] `.gitignore` (node_modules, .env, build output, etc.)
 
 ### AI integration
-- [ ] Vercel AI SDK (`ai` package) or equivalent
+- [ ] Vercel AI SDK (`ai` on the server, `@ai-sdk/react` on the client)
 - [ ] API route / endpoint for chat
 - [ ] Model configuration (provider, model name, API key from env)
+- [ ] Compatible SDK/provider versions recorded in the lockfile
+- [ ] Synthetic AI SDK mock model for unit/integration tests without an API key
 
 ### Design
 - [ ] Design tokens (`../assets/design-tokens.json`)
@@ -55,6 +57,7 @@ Use this checklist during scaffolding. Some items are provided by the boilerplat
 
 ## Notes
 
-- Don't create config files manually if the boilerplate provides them — it leads to conflicts.
+- Don't create config files manually if the boilerplate provides them - it leads to conflicts.
 - Let the agent research and recommend the right boilerplate based on the ADR decisions.
+- Run installation, test and startup commands here once `package.json` exists; inspect its scripts first.
 - Keep this folder organized: separate routes, components, domain logic, and tests.
