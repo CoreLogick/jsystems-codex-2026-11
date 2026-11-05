@@ -27,6 +27,7 @@ class ResumeOnceTests(unittest.TestCase):
         self.cli.chmod(0o700)
         self.clock = dt.datetime(2030, 1, 1, 5, 59, tzinfo=tool.UTC)
         self.calls = []
+        self.elapsed = 0.0
 
     def args(self, *extra):
         return tool.parser().parse_args([
@@ -39,6 +40,7 @@ class ResumeOnceTests(unittest.TestCase):
     def sleep(self, seconds):
         self.assertLessEqual(seconds, 60)
         self.clock += dt.timedelta(seconds=seconds)
+        self.elapsed += seconds
 
     def runner(self, command, **kw):
         self.calls.append((command, kw))
@@ -47,7 +49,8 @@ class ResumeOnceTests(unittest.TestCase):
     def run_args(self, args, runner=None, sleep=None):
         with contextlib.redirect_stdout(io.StringIO()):
             return tool.execute(args, now=lambda: self.clock,
-                                sleep=sleep or self.sleep, runner=runner or self.runner)
+                                sleep=sleep or self.sleep, runner=runner or self.runner,
+                                monotonic=lambda: self.elapsed)
 
     def test_rejects_state_or_executor_override_without_exposing_value(self):
         for name in ("CODEX_SQLITE_HOME", "CODEX_EXEC_SERVER_URL",
@@ -62,6 +65,25 @@ class ResumeOnceTests(unittest.TestCase):
                 self.assertNotIn("SYNTHETIC_PRIVATE_VALUE", str(raised.exception))
                 self.assertFalse(self.calls)
                 self.assertFalse(args.log.exists())
+
+    def test_empty_identity_selector_is_rejected_before_waiting(self):
+        with patch.dict(os.environ, {"OPENAI_IDENTITY_TOKEN_FILE": ""}):
+            with self.assertRaisesRegex(ValueError, "OPENAI_IDENTITY_TOKEN_FILE"):
+                self.run_args(self.args("--run"))
+        self.assertEqual(self.elapsed, 0)
+        self.assertFalse(self.calls)
+        self.assertFalse((self.root / "receipt.jsonl").exists())
+
+    def test_oversleep_within_lateness_still_exceeds_maximum_wait(self):
+        def oversleep(seconds):
+            self.clock += dt.timedelta(seconds=661)
+            self.elapsed += 661
+        self.assertEqual(self.run_args(self.args("--run", "--max-wait-minutes", "11"),
+                                       sleep=oversleep), 4)
+        self.assertFalse(self.calls)
+        events = [json.loads(line)["event"] for line in (self.root / "receipt.jsonl").read_text().splitlines()]
+        self.assertEqual(events[-1], "aborted_wait_budget")
+        self.assertEqual((self.clock - dt.datetime(2030, 1, 1, 6, 10, tzinfo=tool.UTC)).total_seconds(), 1)
 
     def test_dry_run_never_sleeps_invokes_or_writes(self):
         self.assertEqual(self.run_args(self.args()), 0)
@@ -170,7 +192,9 @@ class ResumeOnceTests(unittest.TestCase):
 
     def test_stopped_clock_does_not_wait_forever(self):
         args = self.args("--run", "--max-wait-minutes", "11")
-        self.assertEqual(self.run_args(args, sleep=lambda _: None), 4)
+        def frozen_wall_clock(seconds):
+            self.elapsed += seconds
+        self.assertEqual(self.run_args(args, sleep=frozen_wall_clock), 4)
         self.assertFalse(self.calls)
 
     @unittest.skipIf(os.name == "nt", "POSIX executable stub; Windows remains unverified")

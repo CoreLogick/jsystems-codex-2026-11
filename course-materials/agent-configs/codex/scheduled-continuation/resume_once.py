@@ -62,7 +62,7 @@ def parser():
 
 
 def execute(args, now=lambda: dt.datetime.now(UTC), sleep=time.sleep,
-            runner=subprocess.run):
+            runner=subprocess.run, monotonic=time.monotonic):
     # These selectors can redirect state, identity or the executor despite an
     # explicit CODEX_HOME. Refuse unsupported setups instead of changing them.
     unsupported = (
@@ -72,7 +72,7 @@ def execute(args, now=lambda: dt.datetime.now(UTC), sleep=time.sleep,
         "OPENAI_FEDERATION_RULE_ID", "OPENAI_IDENTITY_TOKEN_FILE",
         "OPENAI_WORKLOAD_IDENTITY_CONTEXT",
     )
-    present = [name for name in unsupported if os.environ.get(name)]
+    present = [name for name in unsupported if name in os.environ]
     if present:
         raise ValueError("unsupported state/executor/identity overrides: " + ", ".join(present)
                          + "; use a verified native command for this environment")
@@ -123,7 +123,7 @@ def execute(args, now=lambda: dt.datetime.now(UTC), sleep=time.sleep,
                                       **fields}, ensure_ascii=False) + "\n")
             receipt.flush()
         record("scheduled", session=args.session, target_utc=target.isoformat())
-        waited = 0.0
+        started = monotonic()
         while True:
             remaining = (target - now()).total_seconds()
             if remaining <= 0:
@@ -131,12 +131,17 @@ def execute(args, now=lambda: dt.datetime.now(UTC), sleep=time.sleep,
             if remaining > args.max_wait_minutes * 60:
                 record("aborted_clock_change")
                 return 4
-            if waited >= wait_budget:
+            elapsed = monotonic() - started
+            if elapsed >= wait_budget:
                 record("aborted_wait_budget")
                 return 4
-            interval = min(remaining, 60, wait_budget - waited)
+            interval = min(remaining, 60, wait_budget - elapsed)
             sleep(interval)
-            waited += interval
+        # A late wakeup can reach the target before the loop checks its budget.
+        # Check monotonic elapsed time again before dispatch, even within wall lateness.
+        if monotonic() - started > wait_budget:
+            record("aborted_wait_budget")
+            return 4
         if (now() - target).total_seconds() > args.max_lateness_seconds:
             record("aborted_late_wakeup")
             return 4

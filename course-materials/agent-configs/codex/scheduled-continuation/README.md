@@ -92,7 +92,7 @@ Powyższe warianty wskazują ten sam moment: 05:50 UTC = 06:50 w Polsce w listop
 
 Helper nie instaluje harmonogramu, nie odnawia limitu, nie wydaje kredytów i nie przełącza konta/modelu. Nie obsługuje profili ani zdalnych serwerów - dla nich użyj jawnego natywnego polecenia w odpowiednim środowisku. Odrzuca znane nadpisania executora, tożsamości lub lokalizacji stanu (np. `CODEX_EXEC_SERVER_URL`, `CODEX_SQLITE_HOME`), wypisując tylko nazwy zmiennych. Nie analizuje konfiguracji zdalnej w plikach ani w działającym daemonie - potwierdź lokalny kontekst wątku przed uruchomieniem. Kod 2 oznacza błąd walidacji/argumentów; 4 - przerwanie bez wysłania (spóźnienie, zmiana zegara lub wyczerpany czas oczekiwania). Kod 1 oznacza błąd wywołania CLI (oryginalny kod zapisany w logu); 5 - brak rozpoznanego potwierdzenia dla wskazanego UUID. Kod 3 oznacza "wiadomość zakolejkowana, resume się nie powiodło"; 124 oznacza timeout z niepewnym dostarczeniem. Brak automatycznych ponowień.
 
-Przed użyciem zweryfikuj lokalność daemona i środowiska. Helper odrzuca niepuste wartości dokładnie tych zmiennych:
+Przed użyciem zweryfikuj lokalność daemona i środowiska. Helper odrzuca obecność dokładnie tych zmiennych, również z pustą wartością:
 
 - `CODEX_SQLITE_HOME`, `CODEX_EXEC_SERVER_URL`;
 - `CODEX_EXEC_SERVER_NOISE_REGISTRY_URL`, `CODEX_EXEC_SERVER_NOISE_ENVIRONMENT_ID`, `CODEX_EXEC_SERVER_NOISE_AUTH_TOKEN`, `CODEX_EXEC_SERVER_NOISE_CHATGPT_ACCOUNT_ID`;
@@ -110,4 +110,6 @@ Jeśli pracujesz w czacie aplikacji/webie, sprawdź dostępność Scheduled i po
 
 Dokumentacja OpenAI: [queue i resume](https://learn.chatgpt.com/docs/developer-commands?surface=cli), [Scheduled tasks](https://learn.chatgpt.com/docs/automations?surface=app), [Goals](https://developers.openai.com/cookbook/examples/codex/using_goals_in_codex).
 
-Weryfikacja: składnia CLI 0.166.0 i 12 syntetycznych testów helpera na Linuksie. Rzeczywiste wznowienie po limicie i Windows nie były testowane.
+Weryfikacja: składnia CLI 0.166.0 i 14 syntetycznych testów helpera na Linuksie. Rzeczywiste wznowienie po limicie i Windows nie były testowane.
+
+Kontrola czasu używa zegara monotonicznego i ponownego sprawdzenia budżetu po wybudzeniu, przed wysłaniem. Nie sumuje samych żądanych interwałów sleep.
