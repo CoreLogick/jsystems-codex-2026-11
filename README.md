@@ -7,6 +7,14 @@
 - Gałąź `main` pozostaje bazą startową kursu z materiałami i aktualizacjami.
 - Dzień 2: [podsumowanie](course-materials/zoom-summary-chat-history/day-2-summary.md) i [historia czatu](course-materials/zoom-summary-chat-history/day-2-chat-history.md).
 
+**Dobra wiadomość: dodatkowe resety limitów Codex!**
+
+- Na moim koncie szkoleniowym pojawiły się **2 pełne resety limitów**. Sprawdźcie komendą `/usage`, czy macie je również u siebie ([opis komendy](https://learn.chatgpt.com/docs/developer-commands?surface=cli)).
+- Opcja **Full reset (Weekly + 5 hr)** odnawia zarówno limit tygodniowy, jak i pięciogodzinny. Warto zachować ją na wyczerpany limit **7-dniowy**.
+- Moja rada: po zwykłym resecie tygodniowym wykorzystajcie dostępną pulę. Jeśli wyczerpiecie ją już po **1-2 dniach**, wtedy użyjcie dodatkowego resetu - może to oszczędzić **5-6 dni czekania** na zwykłe odnowienie.
+- Szkoda zużywać pełny reset tylko po to, żeby odblokować okno **5h**, albo pod koniec tygodnia, gdy do zwykłego resetu zostało **1-2 dni**. Wtedy warto poczekać i zachować go na później ;)
+- Sprawdźcie też **termin ważności** każdego resetu w `/usage`.
+
 ## Po dniu 1 (4.11)
 
 - Projekt zaczniemy od wyboru pomysłu, PRD, ADR i planu; kodu aplikacji jeszcze nie ma.
