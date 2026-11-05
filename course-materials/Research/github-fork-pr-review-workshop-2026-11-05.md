@@ -13,6 +13,8 @@ Fine-grained PAT wybrany tylko dla Twojego forka nie daje prawa tworzenia PR lub
 
 `Course-Tools` i sandbox sterują dostępem narzędzia do środowiska lokalnego. Nie rozszerzają zdalnych uprawnień PAT w GitHub. Rozróżnij brak dostępu do credential store w sandboxie od rzeczywistej odmowy zapisu do upstream.
 
+Dokładne ścieżki dla administratora firmy i właściciela forka: [ChatGPT Business, GitHub App i Copilot Business](github-code-review-company-settings-2026-11-05.md).
+
 ## 1. Push i PR
 
 Przed synchronizacją zachowaj lokalną pracę, potwierdź remotes oraz gałąź. Zaktualizuj main swojego forka z upstream/main, a implementację prowadź na osobnej gałęzi; nie resetuj ani nie nadpisuj cudzej pracy. Nie twórz ponownie forka, który już istnieje.
