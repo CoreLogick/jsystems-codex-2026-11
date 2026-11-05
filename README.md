@@ -6,6 +6,8 @@
 - Design system x-kom: [PR #3](https://github.com/LucasMatuszewski/jsystems-codex-2026-11/pull/3).
 - Gałąź `main` pozostaje bazą startową kursu z materiałami i aktualizacjami.
 - Dzień 2: [podsumowanie](course-materials/zoom-summary-chat-history/day-2-summary.md) i [historia czatu](course-materials/zoom-summary-chat-history/day-2-chat-history.md).
+- Nowe instrukcje: [formularze pytań i fragment AGENTS.md](course-materials/Research/codex-interactive-questions-2026-11-05.md), [jednorazowa kontynuacja po odnowieniu limitu](course-materials/agent-configs/codex/scheduled-continuation/README.md) oraz [przegląd spójności dokumentów przed implementacją](course-materials/Prompt%20examples/Spec-consistency-review-and-implementation.md).
+- Przykłady konfiguracji Bash i PowerShell używają teraz `micro` jako domyślnego edytora; `zed --wait` pozostaje alternatywą.
 
 **Dobra wiadomość: dodatkowe resety limitów Codex!**
 
