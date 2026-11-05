@@ -18,6 +18,9 @@ __pycache__/
 playwright-report/
 test-results/
 playwright/.cache/
+.npm-cache/
+.playwright-browsers/
+.playwright-profile/
 
 # Local Codex history, credentials and runtime state; keep shared config and rules.
 .codex/auth.json
