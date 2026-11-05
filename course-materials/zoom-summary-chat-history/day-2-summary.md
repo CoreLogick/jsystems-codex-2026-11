@@ -205,6 +205,8 @@ Przedstawiono podejście Spec Driven Development: najpierw doprecyzowanie proble
 
 PRD służyło opisaniu funkcji, użytkowników, przepływów, zachowania w sytuacjach niejasnych oraz granic PoC. ADR służyło dokumentowaniu decyzji technicznych, ich uzasadnienia i alternatyw. Wskazano oddzielne skills `$write-prd` i `$write-adr` oraz przykłady promptów dla obu etapów.
 
+PRD omówiono w całości. Pracę nad ADR dopiero rozpoczęto; dokończenie ADR było zadaniem domowym. Udostępniono prompt do planu i zachęcono do uruchomienia agenta oraz wykorzystania dostępnego limitu przed kolejnymi zajęciami. Ukończone ADR i plan prowadzącego nie oznaczają, że cała grupa zakończyła te etapy.
+
 Ustalona lokalizacja PRD to `docs/PRD.md` wewnątrz repozytorium szkoleniowego, a nie niezależny katalog poza projektem. Jeśli agent proponuje inne miejsce, należy sprawdzić jego katalog roboczy i wskazany zakres zadania.
 
 Materiały:
@@ -334,11 +336,11 @@ https://restic.net/
 1. Dokończyć diagnostykę dostępu do GitHub CLI, w tym problemów poświadczeń w sandboxie i Windows Credential Manager. Sprawdzić zakres i ważność tokenu oraz potrzebne operacje zamiast automatycznie rozszerzać wszystkie uprawnienia.
 2. Skonfigurować krótkie instrukcje personalizacyjne na właściwym poziomie użytkownika i projektu oraz niski poziom szczegółowości odpowiedzi.
 3. Zainstalować i przetestować potrzebne skills, szczególnie projektowe skills do design systemu, PRD, ADR i code review. Przejrzeć ich instrukcje i skrypty pod kątem bezpieczeństwa.
-4. Dokończyć pytania o zakres PoC i dokumentację PRD, następnie wykorzystać research agenta przy podejmowaniu decyzji w ADR. Udostępnić i przejrzeć wskazówki do generowania ADR.
+4. Dokończyć ADR w ramach pracy domowej, wykorzystując research agenta i udostępniony prompt. PRD zostało omówione w całości; następne etapy to plan i implementacja.
 5. Sprawdzić Question mode w aplikacji desktopowej i nadal diagnozować znikające formularze oraz oczekiwanie na odpowiedź użytkownika.
-6. Przygotować Context7 i dodać krótką zasadę wyszukiwania: dla CLI najpierw wbudowane `--help`, na przykład `gh --help`; następnie Context7, a wyszukiwanie webowe dopiero wtedy, gdy wcześniejsze źródła nie wystarczą. Dla dokumentacji bibliotek zaczynać od Context7.
+6. Przygotować Context7 i dodać krótką zasadę wyszukiwania: dla CLI najpierw wbudowane `--help`, na przykład `gh --help`; następnie Context7, a wyszukiwanie webowe dopiero wtedy, gdy wcześniejsze źródła nie wystarczą. Dla dokumentacji bibliotek zaczynać od Context7. Wykonać też jawne polecenie wyszukania w sieci lub przeczytania wskazanego URL.
 7. Przygotować plan pracy z wieloma subagentami i doborem Luna lub Terra przez orkiestratora zależnie od złożoności zadania. Opcjonalnie uwzględnić OpenCode w trybie headless z Xiaomi MiMo oraz krótką instrukcję delegowania.
-8. Przed rozpoczęciem realizacji zlecić przegląd spójności PRD, ADR i planu oraz poprawić wykryte rozbieżności.
+8. Przed rozpoczęciem realizacji zlecić niezależnemu agentowi bez odziedziczonej historii przegląd spójności PRD, ADR, AGENTS.md i planu oraz poprawić wykryte rozbieżności.
 
 Na 6 listopada zapowiedziano kontynuację pracy z ADR, uruchamianiem aplikacji i delegowaniem zadań.
 
