@@ -66,3 +66,14 @@ The root `.codex/config.toml` is active when Codex trusts and opens this reposit
 - [Execpolicy rules](https://learn.chatgpt.com/docs/agent-configuration/rules)
 - [Approval and security model](https://learn.chatgpt.com/docs/agent-approvals-security)
 - [Context7 remote MCP](https://mcp.context7.com/mcp)
+
+
+## Daemon lifecycle clarification and subsequent verification
+
+The installed 0.166.0 CLI help confirms `codex app-server daemon restart`, `stop`, `start`, `version` and `update --from-cli`. Configuration rollout should restart the shared daemon after active work has stopped, then start a fresh ordinary `codex` chat. `--no-daemon` bypasses the shared server and is useful only as a separate diagnostic comparison; it does not validate the normal daemon path. Resuming a saved chat may restore its permission selection, so verify the active selection in the new chat.
+
+The user subsequently reported a successful local session with `course-tools` selected, Context7 connected, resolve/query completed, authenticated read-only GitHub metadata returned, and separate Playwright open/snapshot/close calls successful. The preceding launch instructions included `--no-daemon`; ordinary daemon operation must be verified separately unless the user confirms they omitted that flag. These tool successes exercise allow-rule host exceptions and the separate MCP surface, not GitHub/Chrome running inside the sandbox.
+
+In the existing assistant executor, subsequent default and explicitly escalated safe probes both remained AppContainer/low integrity; gh returned 401 and Chrome failed with Crashpad/pipe errors. This observation does not establish why a live permission change did not affect that executor, nor prove that low integrity alone caused the failures. Do not infer cache behavior, daemon state, or a separate runtime architecture solely from these results. The positive user-side local session and this unchanged executor are distinct observations.
+
+Selected `allow` rules permit matching commands outside the sandbox. The ordinary permission profile still governs sandboxed commands. `network.enabled=true` enables outbound command networking; without an active proxy the domain table does not constrain direct destinations. `course-tools` has no secret-file deny-read rules. These facts must be explained when recommending the profile for synthetic-data training VMs.

@@ -4,9 +4,19 @@
 
 1. **Używaj PowerShella w Windows**, w katalogu swojego forka. Na czas ćwiczeń nie przełączaj środowiska między Windows, WSL i zdalnym kontenerem: każda z tych lokalizacji ma osobny system plików, logowanie `gh`, przeglądarkę i konfigurację Codex.
 2. **Zaktualizuj `main` swojego forka** zgodnie z instrukcją prowadzącego, a potem pracuj na własnej gałęzi. Nie kopiuj całego `config.toml` do ustawień globalnych. Konfiguracja projektu `.codex/config.toml` ma już profil `course-tools` jako domyślny.
-3. **Uruchom lub uruchom ponownie Codex z katalogu repozytorium.** Zaufaj repozytorium tylko wtedy, gdy pobrałeś je z kursowego forka i wiesz, jakie pliki zawiera. Aby Codex znalazł zainstalowany Playwright CLI (katalog npm nie zawsze jest w PATH), dodaj go tylko do tego okna PowerShell, wpisując: $env:Path = "$env:APPDATA\npm;$env:Path". Następnie uruchom polecenie codex --no-daemon. Po zmianie konfiguracji zamknij poprzednią sesję i uruchom nową; otwarta sesja może zachować stare ustawienia.
+3. **Po zmianie konfiguracji zrestartuj również serwer działający w tle.** Zakończ aktywne zadania i zamknij interfejsy Codex korzystające z tego samego serwera. Restart rozłącza także inne sesje i agentów tego użytkownika. W zwykłym PowerShellu Windows, poza poleceniami wykonywanymi przez agenta, przejdź do katalogu swojego repozytorium i uruchom kolejno:
+
+   ```powershell
+   $env:Path = "$env:APPDATA\npm;$env:Path"
+   codex app-server daemon restart
+   codex app-server daemon version
+   codex
+   ```
+
+   Sprawdź, czy restart zakończył się powodzeniem, zanim uruchomisz następne polecenie. Pierwszy wiersz udostępnia zainstalowany Playwright CLI tylko temu oknu PowerShell i jego procesom potomnym. Ostatni wiersz uruchamia **nową sesję** ze zwykłym daemonem. Do sprawdzenia nowych ustawień nie wybieraj wznowienia starej rozmowy, która może przywrócić zapisany profil uprawnień. Zaufaj projektowi po przejrzeniu jego konfiguracji: lokalne reguły projektu wymagają zaufanej warstwy konfiguracji. Samo zamknięcie TUI nie zatrzymuje serwera. Flaga `--no-daemon` pomija serwer i służy do osobnego testu diagnostycznego; nie jest standardowym sposobem startu kursu.
+
 4. **Sprawdź aktywną konfigurację** w Codex: `/permissions` i `/status`; opcjonalnie w PowerShellu `codex doctor --all`. Oczekujemy `course-tools`, Windows `elevated`, `prefer_mxc = false`, `approval_policy = on-request`. Wynik `doctor` opisuje konfigurację/diagnostykę, a nie dowodzi sam w sobie, że każde polecenie działa na hoście.
-5. **Korzystaj domyślnie z profilu `course-tools`.** Daje zapis w workspace i publiczny dostęp sieciowy zgodny z profilem `:workspace`; umożliwia kwalifikujące się eskalacje do narzędzi Windows. Wąskie reguły poleceń obejmują odczytowe komendy `gh` oraz podstawowe `playwright-cli open`, `snapshot` i `close`. Zmiany w GitHubie, API, logowanie, merge, publish i dowolny kod przeglądarki nie są tymi wyjątkami.
+5. **Korzystaj domyślnie z profilu `course-tools`.** Daje zapis w workspace i publiczny dostęp sieciowy zgodny z profilem `:workspace`; umożliwia kwalifikujące się eskalacje do narzędzi Windows. Reguły `allow` uruchamiają pasujące odczytowe komendy `gh` oraz podstawowe `playwright-cli open`, `snapshot` i `close` poza sandboxem, z dostępem hostowego użytkownika. Zwykłe polecenia nadal podlegają sandboxowi. Zmiany w GitHubie, API, logowanie, merge, publish i dowolny kod przeglądarki nie są tymi wyjątkami.
 6. **Jeśli potrzebujesz dokumentacji bibliotek, używaj Context7 najpierw.** Wybierz identyfikator biblioteki przez `resolve-library-id`, następnie pobierz potrzebne strony przez `query-docs`. W ustawieniach kursu jest zdalny serwer Context7 bez wymaganego klucza. Jeśli serwer nie pojawia się po ponownym uruchomieniu Codex, sprawdź `/mcp`, sieć i komunikat startowy; nie wklejaj klucza do repozytorium.
 7. **Sprawdź GitHub CLI w PowerShellu** (read-only): `gh auth status`, potem `gh repo view OWNER/REPO`. Nie drukuj tokena, nie uruchamiaj `gh auth token` i nie wklejaj wyniku zawierającego dane konta do promptu. `gh auth status` sprawdza logowanie, a `gh repo view` sprawdza dostęp do konkretnego repozytorium.
 8. **Sprawdź Playwright CLI** na pustej stronie, z własną nazwą sesji, np. `course-demo-<inicjały>`:
@@ -31,10 +41,36 @@
 | Profil | Zastosowanie | Skutek |
 |---|---|---|
 | `course-tools` (domyślny) | Codzienna praca na warsztacie Windows | Workspace-write, publiczna sieć oraz możliwość wąskiej eskalacji hostowej; brak OS-owych reguł deny-read dla `.env`/`secrets`. |
-| `course-root` | Ćwiczenie profilu ścisłego | Dziedziczy `course-workspace`, które blokuje odczyt nazw `.env*` i `secrets` w workspace; test wykazał, że ten profil nie może użyć sprawdzonej ścieżki hostowej. |
-| `course-workspace` | Wariant ścisły bazowy | Te same blokady odczytu, co wyżej. |
+| `course-workspace` | Profil ścisły | Zapis w workspace i temp, sieć włączona; blokady odczytu wskazanych plików .env i katalogów secrets. W zmierzonym teście pełna eskalacja hostowa nie wystartowała. |
+| `course-root` | Alias zgodności | Dokładnie ten sam profil co course-workspace; nie daje dodatkowej ochrony. |
+| `course-review` | Przegląd kodu | Workspace tylko do odczytu; dziedziczone blokady sekretów. Katalogi tymczasowe pozostają zapisywalne. |
+| `course-docs` | Praca nad dokumentacją | Jak course-review, ale docs/ można edytować; temp nadal zapisywalne. |
+| `course-jetbrains` | Opcjonalny przykład sieciowy | Zapis w workspace i blokady sekretów; lista dwóch domen działa tylko przy aktywnym proxy sieciowym. Proxy nie jest włączane przez kursową konfigurację projektu. |
 
 Domyślny profil jest kompromisem kursowym, nie granicą do pracy z produkcyjnymi sekretami. Nie umieszczaj sekretów w repozytorium ani nie dodawaj ich do promptów. Reguły poleceń ograniczają konkretne wzorce, a nie wszystkie możliwe warianty składni czy skrypty. Kwalifikująca się eskalacja może uruchomić dozwolone narzędzie jako interaktywny użytkownik Windows, więc może użyć jego logowania i przeglądarki. Nie zatwierdzaj nieznanych skryptów.
+
+
+### Co oznacza „low integrity”
+
+Windows przypisuje procesom poziomy uprawnień. Zwykły PowerShell zwykle ma poziom „medium”, a uruchomiony jako administrator „high”. „Low” oznacza dodatkowe ograniczenie: taki proces nie może normalnie zmieniać zasobów oznaczonych wyższym poziomem, np. plików zwykłych aplikacji. To etykieta ochrony systemowej, a nie ocena jakości programu ani informacja o awarii. AppContainer dodaje własne ograniczenia do tego poziomu. Sam odczyt „low” nie dowodzi, dlaczego gh nie widzi logowania lub dlaczego Chrome nie startuje; te zachowania trzeba sprawdzić osobno. [Opis Microsoft](https://learn.microsoft.com/en-us/windows/win32/secauthz/mandatory-integrity-control).
+
+### Restart, aktualizacja i sprawdzenie serwera
+
+Komendy powyżej sprawdzono w pomocy zainstalowanego Codex CLI 0.166.0. Alternatywa w otwartym TUI: wpisz `/daemon` i wybierz **Restart background server**. Interfejs ostrzega o pracy, którą restart może przerwać. [Dokumentacja Codex](https://learn.chatgpt.com/docs/developer-commands).
+
+Jeśli komenda restartu zwróci błąd, zapisz niesekretny komunikat. Możesz wykonać osobno `codex app-server daemon stop`, następnie `codex app-server daemon start` i ponownie `codex app-server daemon version`. Nie używaj zbiorczego zabijania wszystkich procesów node.exe/codex.exe. Jeżeli serwer nadal nie startuje, przekaż błąd prowadzącemu.
+
+Po **aktualizacji samego CLI** pakiet serwera może wymagać wyrównania do wersji CLI. W zwykłym PowerShellu, po zakończeniu zadań, wykonaj:
+
+```powershell
+codex app-server daemon update --from-cli
+codex app-server daemon restart
+codex app-server daemon version
+```
+
+`--from-cli` kopiuje i przypina pakiet serwera z obecnie zainstalowanego CLI; sprawdź pytanie o zastąpienie pakietu. Tego kroku nie potrzeba po zwykłej edycji config.toml lub pliku .rules. Polecenie `version` wypisuje wersje CLI i działającego serwera. Zgodne wersje nie dowodzą jeszcze poprawności profilu: po uruchomieniu nowej sesji sprawdź `/permissions`, `/status` i `/mcp` oraz testy narzędzi z instrukcji.
+
+Restart uruchamia ponownie proces serwera; sam w sobie nie gwarantuje, że użyto oczekiwanej konfiguracji. Zaufanie do projektu, zapisane ustawienia wznowionej rozmowy i polityka administratora nadal mogą wpływać na wynik. Reguły pozwalające narzędziom działać poza sandboxem są opisane w [dokumentacji reguł](https://learn.chatgpt.com/docs/agent-configuration/rules).
 
 ### Jak czytać wynik testu
 
@@ -46,7 +82,7 @@ W dniu 5.11.2026 test wykonany poza Codex przez PowerShell potwierdził: hostowe
 
 - Narzędzia hostowe dziedziczą sesję Windows i mogą widzieć jej logowanie `gh`; środowisko sandboxa może nie widzieć Windows Credential Managera. Dostęp zależy również od repozytorium, token scope, polityki organizacji i sieci.
 - Context7 jest osobnym zdalnym MCP, a nie wyszukiwarką web ani poleceniem `gh`. Jest włączony w konfiguracji kursowej. Najpierw rozwiązuj nazwę biblioteki na dokładny Context7 library ID, potem pytaj o konkretne API.
-- Playwright CLI działa w osobnych poleceniach połączonych identyfikatorem sesji. MCP Playwright pozostaje wyłączony. Reguły nie zezwalają na `run-code`, dowolne skrypty, upload, logowanie ani sterowanie dowolnymi stronami poza standardowym rozpoczęciem testu.
+- Playwright CLI działa w osobnych poleceniach połączonych identyfikatorem sesji. MCP Playwright pozostaje wyłączony. Wyjątki allow nie obejmują run-code, upload ani dowolnych skryptów. Prefiks open nie ogranicza adresu URL: pozwala otworzyć także inne strony. Reguły są dopasowaniem prefiksów poleceń, a nie pełnym firewallem.
 
 ### WezTerm
 
