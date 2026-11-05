@@ -1,5 +1,12 @@
 # UPDATES !!!
 
+## Windows Codex sandbox — ważne przed ćwiczeniami (5.11)
+
+- Używaj domyślnego profilu course-tools; nie włączaj trybu danger-full-access. Zrestartuj Codex po aktualizacji repozytorium.
+- Wykonaj instrukcje [krok po kroku po polsku](course-materials/agent-configs/codex/WINDOWS-QUICKSTART-PL.md). Zawierają też wyjaśnienie profili, testów gh/Context7/Playwright oraz WezTerm.
+- [Raport z pomiaru i konfiguracji dla agentów](course-materials/Research/codex-windows-sandbox-compatibility-2026-11-05.md) opisuje dowody, ograniczenia i procedurę akceptacji.
+- Używaj wyłącznie syntetycznych danych; domyślny profil nie blokuje systemowo odczytu plików .env w workspace.
+
 ## Po dniu 2 (5.11)
 
 - Dokumentacja i gałąź implementacji projektu: [PR #6](https://github.com/LucasMatuszewski/jsystems-codex-2026-11/pull/6), gałąź `feature/hardware-service-copilot` - PRD, ADR i plan.
@@ -64,9 +71,9 @@ git switch -c feat/ai-chat
 codex
 ```
 
-Codex uruchamiasz w katalogu głównym repozytorium. Przejrzyj komunikat zaufania do projektu i zaakceptuj przygotowane repozytorium. Wspólne ustawienia są w `.codex/config.toml`; domyślny profil `course-root` pozwala edytować projekt i korzystać z sieci, w tym instalować zależności. Zarządzana polityka maszyny może dodatkowo ograniczać dostęp.
+Codex uruchamiasz w katalogu głównym repozytorium. Przejrzyj komunikat zaufania do projektu i zaakceptuj przygotowane repozytorium. Wspólne ustawienia są w `.codex/config.toml`; domyślny profil `course-tools` pozwala edytować projekt i korzystać z sieci, w tym instalować zależności. Profil `course-root` zachowuje deny-read jako opcję ścisłą. Zarządzana polityka maszyny może dodatkowo ograniczać dostęp.
 
-`app/` zawiera na razie tylko instrukcję. Podczas zajęć agent utworzy tam aplikację według PRD i ADR; dopiero wtedy instalujemy zależności i uruchamiamy komendy z jej `package.json`. Context7 i Playwright MCP są początkowo wyłączone w konfiguracji Codex. Włączymy je w ćwiczeniu MCP, a role `be-developer`, `fe-developer` i `qa-engineer` dodamy w ćwiczeniu podagentów. Codex czyta konfigurację MCP z `.codex/config.toml`; `.mcp.json` jest przykładem dla Claude Code.
+`app/` zawiera na razie tylko instrukcję. Podczas zajęć agent utworzy tam aplikację według PRD i ADR; dopiero wtedy instalujemy zależności i uruchamiamy komendy z jej `package.json`. Context7 jest włączony jako źródło dokumentacji (najpierw resolve library ID, potem query docs); Playwright MCP pozostaje wyłączony — ręczny test UI korzysta z Playwright CLI. Role `be-developer`, `fe-developer` i `qa-engineer` dodamy w ćwiczeniu podagentów. Codex czyta konfigurację MCP z `.codex/config.toml`; `.mcp.json` jest przykładem dla Claude Code.
 
 Testy jednostkowe i integracyjne AI SDK korzystają z syntetycznego modelu testowego, bez klucza API. Klucz serwerowy jest potrzebny do rozmowy z prawdziwym modelem i pełnego E2E. `.env.example` zawiera wyłącznie nazwy zmiennych; wartości i sposób ładowania środowiska ustalamy przy konfiguracji aplikacji. Nie wklejaj kluczy do rozmowy z agentem ani do plików śledzonych przez Git.
 

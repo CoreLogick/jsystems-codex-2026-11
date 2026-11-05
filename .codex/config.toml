@@ -30,7 +30,7 @@ personality = "pragmatic"          # Style/tone preset (e.g., pragmatic/friendly
 # Filesystem permissions mapped from the root .claude/settings.json.
 # Beta profiles replace legacy sandbox_mode / sandbox_workspace_write settings.
 # Higher-precedence permission selectors win; avoid mixing legacy and named-profile selectors.
-default_permissions = "course-root"
+default_permissions = "course-tools"
 # Command allow/prompt/forbidden examples: .codex/rules/course.rules.
 # Mapping and limitations: course-materials/agent-configs/codex/PERMISSIONS.md.
 
@@ -69,13 +69,15 @@ tool_output_token_limit = 4000
 # ----------------
 # Windows sandbox mode. "elevated" uses the Windows sandbox with elevated setup when required.
 # Legacy fallback: elevated supports denied reads; unelevated does not. Validate MXC separately.
-# [windows]
-# sandbox = "elevated"
+[windows]
+sandbox = "elevated"
 
 # ----------------
 # Feature toggles
 # ----------------
 [features]
+# Tested course baseline; MXC requires a separate acceptance run.
+prefer_mxc = false
 # network_proxy stays OFF in a project config. Codex daemon background threads run from ~/.codex
 # and never load this file, so they want different sandbox firewall ports than project threads.
 # On the Windows elevated sandbox every flip re-runs the admin setup: one UAC prompt each, 7-15 per
@@ -113,10 +115,9 @@ enabled = false
 # Context7 (docs context provider) - connect to remote server
 [mcp_servers.context7]
 url = "https://mcp.context7.com/mcp"
-env_http_headers = { "CONTEXT7_API_KEY" = "CONTEXT7_API_KEY" } # Optional environment-variable header; never paste a key.
 startup_timeout_sec = 20
 tool_timeout_sec = 60
-enabled = false # Optional integration; the course starts with local CLI tools.
+enabled = true # Primary library documentation source for the course.
 # Local MCP server with Context7 on your machine
 # [mcp_servers.context7]
 # command = "npx"
@@ -300,6 +301,17 @@ enabled = false
 # Beta permission profiles; use instead of sandbox_mode / sandbox_workspace_write.
 # Higher-precedence sandbox_mode/--sandbox can select legacy behavior; inspect the effective profile.
 # See course-materials/agent-configs/codex/PERMISSIONS.md for scope and platform limits.
+
+# WARNING: no OS deny-read rules for .env/secrets in this default profile. Never keep real secrets in this course workspace.
+[permissions.course-tools]
+description = "Operational course profile: workspace writes and narrow host-tool exceptions; no OS deny-read rules."
+extends = ":workspace"
+
+[permissions.course-tools.network]
+enabled = true
+
+[permissions.course-tools.network.domains]
+"*" = "allow"
 
 [permissions.course-workspace]
 description = "Workspace editing; named environment files and secrets are unreadable."

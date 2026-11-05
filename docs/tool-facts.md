@@ -9,7 +9,7 @@ Sprawdzono 04.11.2026 na `codex-cli 0.166.0`. Aplikacja w `app/` powstanie podcz
 - `approval_policy = "on-request"` i `approvals_reviewer = "auto_review"` kierują kwalifikujące się prośby o zgodę do automatycznego recenzenta. Nie oznacza to ręcznego pytania uczestnika przy każdej operacji ani dowolnego dostępu do plików. [Opis recenzenta zgód](https://developers.openai.com/codex/config-reference).
 - `codex execpolicy check --rules .codex/rules/course.rules npm install` sprawdza reguły bez instalacji. Brak dopasowanej reguły oznacza, że komenda nadal podlega sandboxowi i polityce zgód. Prefiksy nie obejmują wszystkich aliasów i wariantów polecenia. [Reguły Codex](https://developers.openai.com/codex/rules).
 - `--strict-config` istnieje, ale w tej wersji nie działa z `debug`, `features`, `mcp` ani `execpolicy`. `codex app-server --strict-config --print-startup-config` sprawdza konfigurację startową bez sesji modelu; sam wynik nie dowodzi załadowania ustawień projektu. Odczyt `config/read` z `cwd` repozytorium potwierdził profil `course-root`, politykę zgód, serwery MCP i flagi projektu.
-- Context7 i Playwright MCP są początkowo wyłączone w konfiguracji Codex. Włączamy je podczas ćwiczenia. Codex korzysta z tabel `mcp_servers`; `.mcp.json` dotyczy innego klienta. Role podagentów dodajemy do `.codex/agents/` podczas zajęć. Nie kopiuj ustawień użytkownika ani kluczy do repozytorium.
+- Context7 jest włączony; najpierw rozwiąż library ID i odpytaj dokumentację. Playwright MCP pozostaje wyłączony; kursowy test UI używa Playwright CLI. Codex korzysta z tabel `mcp_servers`; `.mcp.json` dotyczy innego klienta. Role podagentów dodajemy do `.codex/agents/` podczas zajęć. Nie kopiuj ustawień użytkownika ani kluczy do repozytorium.
 
 ## Vercel AI SDK 7
 

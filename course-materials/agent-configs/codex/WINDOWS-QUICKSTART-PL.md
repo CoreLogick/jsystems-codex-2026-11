@@ -1,0 +1,57 @@
+# Windows: start kursu i diagnostyka Codex (instrukcja dla uczestników)
+
+## Zrób to podczas kursu — krok po kroku
+
+1. **Używaj PowerShella w Windows**, w katalogu swojego forka. Na czas ćwiczeń nie przełączaj środowiska między Windows, WSL i zdalnym kontenerem: każda z tych lokalizacji ma osobny system plików, logowanie `gh`, przeglądarkę i konfigurację Codex.
+2. **Zaktualizuj `main` swojego forka** zgodnie z instrukcją prowadzącego, a potem pracuj na własnej gałęzi. Nie kopiuj całego `config.toml` do ustawień globalnych. Konfiguracja projektu `.codex/config.toml` ma już profil `course-tools` jako domyślny.
+3. **Uruchom lub uruchom ponownie Codex z katalogu repozytorium.** Zaufaj repozytorium tylko wtedy, gdy pobrałeś je z kursowego forka i wiesz, jakie pliki zawiera. Aby Codex znalazł zainstalowany Playwright CLI (katalog npm nie zawsze jest w PATH), dodaj go tylko do tego okna PowerShell, wpisując: $env:Path = "$env:APPDATA\npm;$env:Path". Następnie uruchom polecenie codex --no-daemon. Po zmianie konfiguracji zamknij poprzednią sesję i uruchom nową; otwarta sesja może zachować stare ustawienia.
+4. **Sprawdź aktywną konfigurację** w Codex: `/permissions` i `/status`; opcjonalnie w PowerShellu `codex doctor --all`. Oczekujemy `course-tools`, Windows `elevated`, `prefer_mxc = false`, `approval_policy = on-request`. Wynik `doctor` opisuje konfigurację/diagnostykę, a nie dowodzi sam w sobie, że każde polecenie działa na hoście.
+5. **Korzystaj domyślnie z profilu `course-tools`.** Daje zapis w workspace i publiczny dostęp sieciowy zgodny z profilem `:workspace`; umożliwia kwalifikujące się eskalacje do narzędzi Windows. Wąskie reguły poleceń obejmują odczytowe komendy `gh` oraz podstawowe `playwright-cli open`, `snapshot` i `close`. Zmiany w GitHubie, API, logowanie, merge, publish i dowolny kod przeglądarki nie są tymi wyjątkami.
+6. **Jeśli potrzebujesz dokumentacji bibliotek, używaj Context7 najpierw.** Wybierz identyfikator biblioteki przez `resolve-library-id`, następnie pobierz potrzebne strony przez `query-docs`. W ustawieniach kursu jest zdalny serwer Context7 bez wymaganego klucza. Jeśli serwer nie pojawia się po ponownym uruchomieniu Codex, sprawdź `/mcp`, sieć i komunikat startowy; nie wklejaj klucza do repozytorium.
+7. **Sprawdź GitHub CLI w PowerShellu** (read-only): `gh auth status`, potem `gh repo view OWNER/REPO`. Nie drukuj tokena, nie uruchamiaj `gh auth token` i nie wklejaj wyniku zawierającego dane konta do promptu. `gh auth status` sprawdza logowanie, a `gh repo view` sprawdza dostęp do konkretnego repozytorium.
+8. **Sprawdź Playwright CLI** na pustej stronie, z własną nazwą sesji, np. `course-demo-<inicjały>`:
+
+   ```powershell
+   $pw = Join-Path $env:APPDATA 'npm/playwright-cli.cmd'
+   & $pw -s=course-demo open about:blank --browser=chrome --headed
+   & $pw -s=course-demo snapshot
+   & $pw -s=course-demo close
+   ```
+
+   Test używa własnej sesji i nie zmienia profilu Chrome. Jeśli `playwright-cli` nie jest zainstalowany, pomiń test i poproś prowadzącego o sprawdzenie środowiska; nie instaluj narzędzi globalnie bez instrukcji.
+9. **W Codex sprawdź Playwright w domyślnej sesji CLI:** uruchom osobno polecenia playwright-cli open about:blank --browser=chrome --headed, playwright-cli snapshot i playwright-cli close. Nie dodawaj opcji -s w tym teście, aby dopasować wąską regułę poleceń. Poza Codex możesz używać własnego identyfikatora sesji jak w kroku 8.
+10. **W Codex rób odczytowe testy narzędzi.** Reguły pozwalają na ograniczone polecenia. Gdy Windows prosi o zgodę na eskalację, sprawdź dokładne polecenie i zatwierdź je tylko wtedy, gdy rozumiesz jego skutek. Przy odmowie sandboxa nie obchodź jej przez `--dangerously-bypass-approvals-and-sandbox`, `--yolo`, `approval_policy = "never"` ani usuwanie reguł.
+11. **Jeśli któryś test nie działa:** zanotuj komendę, exit code, wersję Codex (`codex --version`), aktywny profil i niesekretny komunikat błędu. Nie wysyłaj tokenów, pełnego środowiska, prywatnych ścieżek ani danych klienta. Przekaż te informacje prowadzącemu.
+12. **Pracuj wyłącznie na syntetycznych danych.** Nie twórz prawdziwych kluczy w repozytorium. Profile `course-root` i `course-workspace` są dostępne jako bardziej restrykcyjne warianty do ćwiczeń: można uruchomić nową sesję z `codex -c 'default_permissions="course-root"'`, ale wtedy odczyty chronionych plików są blokowane i eskalacja do hostowych narzędzi może się nie powieść.
+
+## Co to oznacza i dlaczego
+
+### Profile
+
+| Profil | Zastosowanie | Skutek |
+|---|---|---|
+| `course-tools` (domyślny) | Codzienna praca na warsztacie Windows | Workspace-write, publiczna sieć oraz możliwość wąskiej eskalacji hostowej; brak OS-owych reguł deny-read dla `.env`/`secrets`. |
+| `course-root` | Ćwiczenie profilu ścisłego | Dziedziczy `course-workspace`, które blokuje odczyt nazw `.env*` i `secrets` w workspace; test wykazał, że ten profil nie może użyć sprawdzonej ścieżki hostowej. |
+| `course-workspace` | Wariant ścisły bazowy | Te same blokady odczytu, co wyżej. |
+
+Domyślny profil jest kompromisem kursowym, nie granicą do pracy z produkcyjnymi sekretami. Nie umieszczaj sekretów w repozytorium ani nie dodawaj ich do promptów. Reguły poleceń ograniczają konkretne wzorce, a nie wszystkie możliwe warianty składni czy skrypty. Kwalifikująca się eskalacja może uruchomić dozwolone narzędzie jako interaktywny użytkownik Windows, więc może użyć jego logowania i przeglądarki. Nie zatwierdzaj nieznanych skryptów.
+
+### Jak czytać wynik testu
+
+`codex doctor`, nazwa backendu i reguła `allow` nie są dowodem, że proces działa poza kontenerem. Test diagnostyczny sprawdza token procesu (`AppContainer`, token ograniczony i poziom integralności), syntetyczny plik, `gh`, Context7 i osobną sesję Playwright. Test nie czyta sekretów ani nie zmienia globalnej konfiguracji. Raport nie zapisuje surowych outputów narzędzi ani tokenów.
+
+W dniu 5.11.2026 test wykonany poza Codex przez PowerShell potwierdził: hostowe `gh`, Context7 i osobne polecenia Playwright `open/snapshot/close` zadziałały. Rzeczywista eskalacja Codex z tymczasowym profilem workspace bez deny-read wykonała te same pięć prób na hoście, a profil `course-root` zakończył się `sandbox_setup_failed` przed uruchomieniem poleceń. To dowód dla tej maszyny i wersji, nie twierdzenie, że MXC zawsze zawodzi. Testy backendów w poprzednim raporcie miały dodatkowe confoundery (m.in. tymczasowy katalog i profil sieci); odczytaj pełny [raport badawczy](../../Research/codex-windows-sandbox-compatibility-2026-11-05.md).
+
+### GitHub, Context7 i Playwright
+
+- Narzędzia hostowe dziedziczą sesję Windows i mogą widzieć jej logowanie `gh`; środowisko sandboxa może nie widzieć Windows Credential Managera. Dostęp zależy również od repozytorium, token scope, polityki organizacji i sieci.
+- Context7 jest osobnym zdalnym MCP, a nie wyszukiwarką web ani poleceniem `gh`. Jest włączony w konfiguracji kursowej. Najpierw rozwiązuj nazwę biblioteki na dokładny Context7 library ID, potem pytaj o konkretne API.
+- Playwright CLI działa w osobnych poleceniach połączonych identyfikatorem sesji. MCP Playwright pozostaje wyłączony. Reguły nie zezwalają na `run-code`, dowolne skrypty, upload, logowanie ani sterowanie dowolnymi stronami poza standardowym rozpoczęciem testu.
+
+### WezTerm
+
+WezTerm jest opcjonalnym emulatorem terminala. Nie wybiera sandboxa i nie naprawia dostępu do poświadczeń, Chrome, sieci, MCP ani procesów potomnych. Test tej maszyny nie wykrył `wezterm` na `PATH`, więc nie ma tu potwierdzonego wyniku działania ani porównania stabilności. Na kursie używaj PowerShella i terminala dostarczonego na VM. Informacje o WezTerm w materiale są orientacyjne; instalację i konfigurację testuj osobno po kursie.
+
+## Po kursie
+
+Jeśli potrzebujesz własnego profilu, skopiuj tylko wybrane ustawienia do `~/.codex/config.toml`, zweryfikuj dokumentację dla aktualnej wersji Codex i przetestuj konfigurację na repozytorium bez sekretów. Nie kopiuj domyślnego `course-tools` do pracy z wrażliwym kodem bez świadomej oceny konsekwencji braku deny-read. Dla pracy z sekretami wybierz udokumentowany profil, który egzekwuje deny-read, i zaakceptuj, że dostęp do narzędzi hostowych może wtedy wymagać innej, osobno sprawdzonej architektury.

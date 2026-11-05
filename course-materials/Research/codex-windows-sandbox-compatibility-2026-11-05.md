@@ -1,0 +1,68 @@
+# Windows Codex sandbox compatibility: tested course profile
+
+**Measured 2026-11-05 on the JSystems Windows VM, Codex CLI 0.166.0.** This note records one machine/session configuration. It is not a platform-wide guarantee. Keep it alongside the Polish participant checklist in [`WINDOWS-QUICKSTART-PL.md`](../agent-configs/codex/WINDOWS-QUICKSTART-PL.md).
+
+## Recommendation
+
+Use the named `course-tools` permission profile as the default in the trusted course repository. It extends Codex `:workspace`, retains `approval_policy = "on-request"` and `approvals_reviewer = "auto_review"`, and adds no filesystem deny-read entries. Set Windows sandbox preference explicitly to `elevated` and `features.prefer_mxc = false` for the tested baseline. Keep `course-workspace` and `course-root` as opt-in strict profiles; they retain exact and recursive deny rules for `.env`, `.env.local`, `.env.dev`, `.env.prod`, `.env.test`, and `secrets`. Never set danger-full-access or disable approvals as a workaround.
+
+The profile's public network rules are unchanged from the existing strict course profiles (`enabled = true`, `"*" = "allow"`). Domain allowlisting is not enforced by a project-level proxy switch here. The tested narrow command exceptions cover read-only `gh` metadata/PR/issue commands and the Playwright CLI open/snapshot/close lifecycle. No `gh api`, PR mutations, arbitrary browser code, shell wrappers, uploads or authentication changes are allowed by these rules. Existing forbidden rules for protected-branch pushes, force pushes, deletes and destructive operations remain. Rules are argv-prefix decisions, not a complete security boundary.
+
+Context7 remote MCP is enabled without an API-key header. It is the preferred source for library/framework documentation: resolve a library ID, then query that ID. Playwright MCP remains disabled; the tested CLI is used for manual browser validation. Provider access is separate from command sandbox access.
+
+## Evidence and interpretation
+
+### Independent host PowerShell control
+
+The user ran `windows_sandbox_probe.py` from a normal PowerShell session outside Codex. The report (`course-sandbox-probe-eyhji8ab/report.json`) recorded a non-AppContainer, non-restricted interactive token, a readable synthetic file, successful `gh repo view`, Context7 resolving `/tailwindlabs/tailwindcss.com`, and successful Playwright `open`, `snapshot`, and `close` in separate foreground invocations. No real secret was read. A separate manual `about:blank` control had also succeeded.
+
+### Actual Codex escalation control
+
+The user ran the agent-exception trial from normal PowerShell. The sanitized report `.sandbox-probe-a86lilf5/report.json` records:
+
+| Trial | Observed result |
+|---|---|
+| `elevated` with `course-root` (denied-read profile) | Codex returned `sandbox_setup_failed`; no child command completed. |
+| `elevated` with temporary `course-cli-probe` extending `:workspace`, network enabled and no deny-read entries | All five separately invoked probes completed with exit code 0: host-token classification, synthetic-file read, `gh`, Context7 resolution, and Playwright open/snapshot/close. |
+
+The report is sanitized: it does not contain account identifiers, token values, raw command output or real secrets. The diagnosis is bounded: removing denied reads for this host-tool profile was associated with successful actual escalation on this VM. It does **not** prove that every denied-read policy fails on every version, or that MXC is universally broken.
+
+### Backend experiment limitations
+
+The first probe run's backend matrix is not used as the basis for the default profile: some trials used an offline `:workspace` control or a temporary directory with ACL differences; failures therefore mixed network, filesystem and backend conditions. Native MXC was observed in an AppContainer/low-integrity context in that run, with Chrome IPC and GitHub authentication failures, but one matrix is insufficient to characterize MXC generally. Explicit fresh host escalation is the relevant positive control. Repeat the matrix only with matched profiles, paths, network conditions and a fresh Codex process.
+
+## Reproduction and acceptance
+
+The diagnostic scripts are `diagnostics/windows_sandbox_probe.py` and its unit tests. Run the probe only from an interactive Windows PowerShell host, outside Codex and outside another container. It refuses to label an AppContainer/restricted/low-integrity parent as host. It creates an owned synthetic probe directory in the worktree; review and remove only that exact directory and report after preserving needed evidence.
+
+For release acceptance, start a **fresh** Codex process after installing this repository configuration and confirm: `/permissions` shows `course-tools`; `codex doctor --all` has no config errors; Context7's `resolve-library-id` and `query-docs` work from the native MCP client; the specific approved `gh` read commands and Playwright lifecycle work from Codex; writes stay inside the repository; protected-branch and destructive denials still match. A subprocess fixture does not prove MCP loading or the actual live provider. In particular, run a separate live smoke check with a real public repo and an owned Playwright session. Never paste or record keys, run `gh auth token`, or use customer data.
+
+## Profile and tradeoffs
+
+| Profile | Use | Consequence |
+|---|---|---|
+| `course-tools` (default) | Course authoring and host-tool exercises on this Windows VM | Workspace-write and tested host escalation; no OS-enforced deny-read for environment/secrets paths. Keep such files out of the repo. |
+| `course-workspace` / `course-root` | Demonstrating strict deny-read behavior | `.env*`/`secrets` denials remain; tested actual host escalation did not start under this profile. |
+| `course-review`, `course-docs`, `course-jetbrains` | Existing narrow examples | Retained unchanged; validate independently before selecting. |
+
+This trades OS-enforced denied reads in the default course profile for usable host integrations under the observed executor. `approval_policy = on-request`, narrow command rules, explicit human review, synthetic inputs and branch protection reduce risk but do not recreate filesystem deny-read guarantees. Do not use this profile on a workspace containing secrets. A separate Windows account/VM with no secrets is a reasonable course deployment boundary; policy ownership lies with the instructor/managed environment.
+
+## Context7, GitHub CLI, Playwright and WezTerm
+
+- The user-level `gh` login was available in the host control and the true Codex escalation trial, not in sandboxed trial processes. A 401 in a sandbox is not evidence that the Windows user has logged out.
+- Context7's public remote MCP resolved the official Tailwind library ID from host and escalated probes. CLI probes alone do not certify the MCP server configured in the Codex process; acceptance must call both MCP tools.
+- Playwright CLI and Chrome worked in the host control and escalated commands. In the tested VM the npm bin path was not inherited by the agent process, so prepend %APPDATA%\npm to PATH only in the PowerShell process that starts the fresh Codex session. Use separate foreground calls and an owned session ID. The CLI's child/daemon behavior inside a restrictive executor is a distinct lifecycle concern.
+- `wezterm` was not found on `PATH` or standard installation paths during this check. No WezTerm run, Lua config test or stability comparison was performed. A terminal emulator selects a shell/window; Codex selects the sandbox separately. WezTerm cannot itself fix executor identity, Windows Credential Manager, browser IPC or sandbox settings. Keep it optional and describe ergonomic tradeoffs as hypotheses until measured.
+
+## Configuration locations and lifecycle
+
+The root `.codex/config.toml` is active when Codex trusts and opens this repository. The complete and minimal examples live in `course-materials/agent-configs/codex/`; both should keep their permissions profiles semantically aligned. User profiles in `%USERPROFILE%\.codex\config.toml`, managed policy, CLI flags and the app/server process can override project choices. Restart Codex after editing config, then inspect `/permissions` and startup diagnostics. `codex doctor` is not proof of an actual process token. Do not set `sandbox_mode` alongside named `default_permissions` without checking precedence. `network_proxy` is intentionally not activated in this repository because its daemon/firewall lifecycle was not part of this positive test.
+
+## Official references
+
+- [Windows sandbox modes](https://learn.chatgpt.com/docs/windows/windows-sandbox)
+- [Permission profiles](https://learn.chatgpt.com/docs/permissions)
+- [Codex configuration](https://learn.chatgpt.com/docs/config-file/config-basic)
+- [Execpolicy rules](https://learn.chatgpt.com/docs/agent-configuration/rules)
+- [Approval and security model](https://learn.chatgpt.com/docs/agent-approvals-security)
+- [Context7 remote MCP](https://mcp.context7.com/mcp)

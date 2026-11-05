@@ -2,20 +2,36 @@
 # Copy as ~/.codex/config.toml or a trusted project's .codex/config.toml.
 # Remove sandbox_mode and [sandbox_workspace_write] from ALL active config layers.
 # This file is a permissions example, separate from model/provider --profile presets.
-default_permissions = "course-workspace"
+default_permissions = "course-tools"
 approval_policy = "on-request"
 # Default tool-output history budget; tools can override it and raw rollouts retain output.
 tool_output_token_limit = 4000
 approvals_reviewer = "auto_review" # Route eligible approval requests to the reviewer agent.
 web_search = "cached" # Separate hosted capability, as in Claude's WebSearch allow.
 
+[windows]
+sandbox = "elevated"
+
 [features]
+# Tested course baseline; MXC requires a separate acceptance run.
+prefer_mxc = false
 # Enforce domain rules; the default profile permits public hosts.
-network_proxy = true
+# network_proxy = true
 
 # Beta permission profiles; use instead of sandbox_mode / sandbox_workspace_write.
 # Higher-precedence sandbox_mode/--sandbox can select legacy behavior; inspect the effective profile.
 # See course-materials/agent-configs/codex/PERMISSIONS.md for scope and platform limits.
+
+# WARNING: no OS deny-read rules for .env/secrets in this default profile. Never keep real secrets in this course workspace.
+[permissions.course-tools]
+description = "Operational course profile: workspace writes and narrow host-tool exceptions; no OS deny-read rules."
+extends = ":workspace"
+
+[permissions.course-tools.network]
+enabled = true
+
+[permissions.course-tools.network.domains]
+"*" = "allow"
 
 [permissions.course-workspace]
 description = "Workspace editing; named environment files and secrets are unreadable."

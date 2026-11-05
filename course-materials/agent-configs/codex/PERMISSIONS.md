@@ -1,3 +1,5 @@
+> **Update 2026-11-05 (Codex CLI 0.166.0, course Windows VM):** the course repository now defaults to course-tools, a workspace-write profile without denied-read entries, because an actual Codex host-escalation trial succeeded with that temporary profile while course-root failed during sandbox setup. Strict profiles remain available. This is machine-specific evidence, not a general MXC failure claim. The operational default means .env and secrets are not OS-denied; keep secrets out of this workspace. See the [Polish participant procedure](WINDOWS-QUICKSTART-PL.md) and [full evidence report](../../Research/codex-windows-sandbox-compatibility-2026-11-05.md).
+
 # Mapping Claude permissions to Codex
 
 Prepared on 2026-10-14 for Codex CLI 0.162.1; re-checked on 2026-10-31 with 0.166.0 (config loads without errors, a `.env` read is refused). Version-specific statements below were observed on 0.162.1. These examples adapt the course's Claude command and file policies to Codex permission profiles and execpolicy rules. They do not claim tool-for-tool parity. Runtime behavior also depends on the selected sandbox, managed requirements and active session settings.

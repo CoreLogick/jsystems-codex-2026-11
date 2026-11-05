@@ -127,6 +127,8 @@ The active project `.codex/config.toml` deliberately leaves `features.network_pr
 
 ## Codex profiles
 
+For the measured Windows course baseline, use the project default course-tools, not the strict course-root: [participant steps in Polish](codex/WINDOWS-QUICKSTART-PL.md) and [evidence report](../Research/codex-windows-sandbox-compatibility-2026-11-05.md). Context7 is enabled in the root project config; Playwright MCP stays off while the CLI is used for manual QA.
+
 Codex reads profile files only from `~/.codex/`. Copy them there, then choose one:
 
 ```bash
