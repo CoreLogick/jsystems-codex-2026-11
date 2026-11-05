@@ -20,7 +20,12 @@ personality = "pragmatic"        # Style/tone preset (e.g., pragmatic/friendly/n
 # Permission examples mapped from Claude: file profiles below plus rules/course.rules.
 # Avoid mixing legacy sandbox_mode selectors with named profiles; higher-precedence selectors win.
 # See PERMISSIONS.md for allow, approval, deny and platform-specific limitations.
-default_permissions = "course-tools"
+# User default: normal sandbox in every project.
+# Opt in to the defined course profile globally by changing this to "course-tools".
+# A trusted project's .codex/config.toml can select course-tools only for that project.
+# sandbox_mode = "danger-full-access" # Demonstration only: disables local sandbox restrictions.
+# Do not keep any active sandbox_mode when using named permission profiles.
+default_permissions = ":workspace"
 web_search = "cached" # Hosted web search is separate from command network permissions.
 oss_provider = "ollama"          # Default OSS (Open Source) models provider
 
@@ -261,7 +266,7 @@ wire_api = "responses"
 # Higher-precedence sandbox_mode/--sandbox can select legacy behavior; inspect the effective profile.
 # See course-materials/agent-configs/codex/PERMISSIONS.md for scope and platform limits.
 
-# WARNING: no OS deny-read rules for .env/secrets in this default profile. Never keep real secrets in this course workspace.
+# Opt-in course-tools profile: no OS deny-read for .env/secrets; use only with synthetic course data.
 [permissions.course-tools]
 description = "Default course editing: workspace/temp writes, network enabled, no secret-file deny-read; rules allow selected host commands outside the sandbox."
 extends = ":workspace"
@@ -360,4 +365,4 @@ enabled = true
 [permissions.course-jetbrains.network.domains]
 "blog.jetbrains.com" = "allow"
 "www.jetbrains.com" = "allow"
-# Domain rules require [features] network_proxy = true, provided in the sample config.
+# Domain rules require an active network proxy; these user examples do not enable it.

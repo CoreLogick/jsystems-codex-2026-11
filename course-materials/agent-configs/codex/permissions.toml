@@ -1,8 +1,13 @@
 # Self-contained permission example; merge selected settings deliberately.
-# Copy as ~/.codex/config.toml or a trusted project's .codex/config.toml.
-# Remove sandbox_mode and [sandbox_workspace_write] from ALL active config layers.
+# Merge into $CODEX_HOME/config.toml (or ~/.codex/config.toml when CODEX_HOME is unset).
+# Comment active sandbox_mode selectors and remove active [sandbox_workspace_write] tables from loaded layers.
 # This file is a permissions example, separate from model/provider --profile presets.
-default_permissions = "course-tools"
+# User default: normal sandbox in every project.
+# Opt in to the defined course profile globally by changing this to "course-tools".
+# A trusted project's .codex/config.toml can select course-tools only for that project.
+# sandbox_mode = "danger-full-access" # Demonstration only: disables local sandbox restrictions.
+# Do not keep any active sandbox_mode when using named permission profiles.
+default_permissions = ":workspace"
 approval_policy = "on-request"
 # Default tool-output history budget; tools can override it and raw rollouts retain output.
 tool_output_token_limit = 4000
@@ -22,7 +27,7 @@ prefer_mxc = false
 # Higher-precedence sandbox_mode/--sandbox can select legacy behavior; inspect the effective profile.
 # See course-materials/agent-configs/codex/PERMISSIONS.md for scope and platform limits.
 
-# WARNING: no OS deny-read rules for .env/secrets in this default profile. Never keep real secrets in this course workspace.
+# Opt-in course-tools profile: no OS deny-read for .env/secrets; use only with synthetic course data.
 [permissions.course-tools]
 description = "Default course editing: workspace/temp writes, network enabled, no secret-file deny-read; rules allow selected host commands outside the sandbox."
 extends = ":workspace"
@@ -121,4 +126,4 @@ enabled = true
 [permissions.course-jetbrains.network.domains]
 "blog.jetbrains.com" = "allow"
 "www.jetbrains.com" = "allow"
-# Domain rules require [features] network_proxy = true, provided in the sample config.
+# Domain rules require an active network proxy; these user examples do not enable it.

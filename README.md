@@ -2,7 +2,7 @@
 
 ## Windows Codex sandbox — ważne przed ćwiczeniami (5.11)
 
-- Używaj domyślnego profilu course-tools; nie włączaj trybu danger-full-access. Zrestartuj Codex po aktualizacji repozytorium.
+- Najpierw ustaw globalny sandbox użytkownika i wyłącz preferencję MXC według instrukcji poniżej, potem zrestartuj daemon. Repozytorium kursu wybiera profil course-tools.
 - Wykonaj instrukcje [krok po kroku po polsku](course-materials/agent-configs/codex/WINDOWS-QUICKSTART-PL.md). Zawierają też wyjaśnienie profili, testów gh/Context7/Playwright oraz WezTerm.
 - [Raport z pomiaru i konfiguracji dla agentów](course-materials/Research/codex-windows-sandbox-compatibility-2026-11-05.md) opisuje dowody, ograniczenia i procedurę akceptacji.
 - Używaj wyłącznie syntetycznych danych; domyślny profil nie blokuje systemowo odczytu plików .env w workspace.

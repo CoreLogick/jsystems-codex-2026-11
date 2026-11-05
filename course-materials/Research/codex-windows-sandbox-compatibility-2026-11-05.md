@@ -86,3 +86,12 @@ After a full restart, the user explicitly confirmed that an ordinary `codex` ses
 All three course configuration files explicitly combine `course-tools`, `approval_policy = "on-request"` and `approvals_reviewer = "auto_review"`. The configuration acceptance check now protects that combination. Official documentation defines it as automatic review for eligible approval requests with a custom permission boundary; the menu's profile label alone does not establish the reviewer setting. It is not a guarantee that a separate running chat has no UI/session override.
 
 Post-restart probes from the existing assistant executor still returned AppContainer/low-integrity metadata. A read-only gh call returned 401; Git push --dry-run failed in Credential Manager/MSYS startup; Playwright about:blank failed in Chrome IPC/Crashpad startup; querying the running daemon version was denied by Windows. No remote branch or PR was changed by these probes. The active assistant execution policy explicitly routes escalations to auto_review, but approval did not remove that observed process containment. This remains an unresolved executor-specific behavior, not evidence that the user's ordinary daemon session or stored GitHub login failed.
+
+
+## Global user configuration correction
+
+The owning user config was subsequently inspected for sandbox/approval selectors only. It still had active sandbox_mode=danger-full-access and features.prefer_mxc=true, while the tested worktree had the new project settings and the original application checkout retained its older project profile. This configuration mismatch must be considered before attributing behavior to a daemon defect.
+
+At the user's explicit request, the global config was backed up and updated atomically: danger-full-access remains as a commented demonstration, default_permissions=:workspace, approval_policy=on-request, approvals_reviewer=auto_review, windows.sandbox=elevated, prefer_mxc=false. Parsed comparison confirmed no unrelated settings changed. This verifies the file update; it does not claim that the already-running server/executor reloaded it.
+
+Reusable full/minimal user examples now default to :workspace and include opt-in course-tools definitions. The trusted course project's default remains course-tools. Documentation explains user-wide profile installation and command-rule scope. Restart the daemon after active work has finished and validate a fresh normal session; no daemon restart was performed by the assistant during this change.

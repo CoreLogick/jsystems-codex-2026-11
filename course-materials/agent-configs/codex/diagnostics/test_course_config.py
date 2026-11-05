@@ -12,11 +12,11 @@ CONFIGS = [ROOT / ".codex/config.toml",
 
 
 class CourseConfigTests(unittest.TestCase):
-    def test_default_is_operational_workspace_profile(self):
+    def test_project_and_user_defaults_are_deliberately_different(self):
         for path in CONFIGS:
             with self.subTest(path=path):
                 data = tomllib.loads(path.read_text(encoding="utf-8-sig"))
-                self.assertEqual(data["default_permissions"], "course-tools")
+                self.assertEqual(data["default_permissions"], "course-tools" if path == CONFIGS[0] else ":workspace")
                 self.assertNotIn("sandbox_mode", data)
                 profile = data["permissions"]["course-tools"]
                 self.assertEqual(profile["extends"], ":workspace")

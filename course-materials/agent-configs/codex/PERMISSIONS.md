@@ -1,3 +1,5 @@
+> **User vs project setup:** merge the [user baseline and optional course profiles](README.md) into the actual CODEX_HOME config. Reusable examples default to :workspace; the trusted course project selects course-tools. To select course-tools globally, install its definition and reviewed user-scope rules, then change the user default. See the [Polish steps](WINDOWS-QUICKSTART-PL.md).
+
 > **Update 2026-11-05 (Codex CLI 0.166.0, course Windows VM):** the course repository now defaults to course-tools, a workspace-write profile without denied-read entries, because an actual Codex host-escalation trial succeeded with that temporary profile while course-root failed during sandbox setup. Strict profiles remain available. This is machine-specific evidence, not a general MXC failure claim. The operational default means .env and secrets are not OS-denied; keep secrets out of this workspace. See the [Polish participant procedure](WINDOWS-QUICKSTART-PL.md) and [full evidence report](../../Research/codex-windows-sandbox-compatibility-2026-11-05.md).
 
 # Mapping Claude permissions to Codex
@@ -11,7 +13,7 @@ Prepared on 2026-10-14 for Codex CLI 0.162.1; re-checked on 2026-10-31 with 0.16
 | [`../claude/settings.json`](../claude/settings.json) and [`settings.jsonc`](../claude/settings.jsonc) | General Claude source examples |
 | [`../../../.claude/settings.json`](../../../.claude/settings.json) | Root Claude source, including file denials and worktree prompts |
 | [`config.toml`](config.toml) | Complete reusable Codex configuration |
-| [`permissions.toml`](permissions.toml) | Minimal configuration with the same five permission profiles |
+| [`permissions.toml`](permissions.toml) | Minimal configuration with the same six named permission profiles |
 | [`rules/course.rules`](rules/course.rules) | Curated allow, prompt and forbidden command examples |
 | [`examples/claude-command-parity.rules`](examples/claude-command-parity.rules) | Inactive literal comparison with every general Claude Bash entry |
 | [`../../../.codex/config.toml`](../../../.codex/config.toml) and [`course.rules`](../../../.codex/rules/course.rules) | Active course-root configuration and rules |
@@ -22,7 +24,7 @@ Claude's `plansDirectory`, `statusLine`, `pom.xml` hooks and tool names such as 
 
 Codex uses TOML for configuration and Starlark `.rules` files for command policy. Prefix decisions map from Claude `allow` to `allow`, `ask` to `prompt`, and `deny` to `forbidden`. Overlapping command rules choose `forbidden` before `prompt` before `allow`. Explicit `prompt` rules can request review even when the command would fit inside the sandbox. [Official rules documentation](https://learn.chatgpt.com/docs/agent-configuration/rules), [0.162.1 decision implementation](https://github.com/openai/codex/blob/rust-v0.162.1/codex-rs/core/src/exec_policy.rs#L396).
 
-An `allow` rule can permit sandbox bypass when the active filesystem policy has no denied-read restrictions. In 0.162.1, active denied reads prohibit unrestricted bypass: approval may widen other access, but the command must retain filesystem enforcement of denied reads. If a suitable sandbox is unavailable, Codex rejects that escalation. This applies to these course profiles, which all retain denied reads. It does not govern external apps or erase secrets already inherited through environment variables or outputs. [0.162.1 sandbox implementation](https://github.com/openai/codex/blob/rust-v0.162.1/codex-rs/core/src/tools/sandboxing.rs#L234).
+An `allow` rule can permit sandbox bypass when the active filesystem policy has no denied-read restrictions. In 0.162.1, active denied reads prohibit unrestricted bypass: approval may widen other access, but the command must retain filesystem enforcement of denied reads. If a suitable sandbox is unavailable, Codex rejects that escalation. This applies to the strict course profiles, which retain denied reads; course-tools has no added deny-read restrictions. It does not govern external apps or erase secrets already inherited through environment variables or outputs. [0.162.1 sandbox implementation](https://github.com/openai/codex/blob/rust-v0.162.1/codex-rs/core/src/tools/sandboxing.rs#L234).
 
 | Claude command group | Curated Codex decision | Reason |
 |---|---|---|

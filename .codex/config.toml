@@ -30,6 +30,8 @@ personality = "pragmatic"          # Style/tone preset (e.g., pragmatic/friendly
 # Filesystem permissions mapped from the root .claude/settings.json.
 # Beta profiles replace legacy sandbox_mode / sandbox_workspace_write settings.
 # Higher-precedence permission selectors win; avoid mixing legacy and named-profile selectors.
+# Course project selection; user-wide defaults belong in $CODEX_HOME/config.toml.
+# sandbox_mode = "danger-full-access" # Demonstration only: disables local sandbox restrictions.
 default_permissions = "course-tools"
 # Command allow/prompt/forbidden examples: .codex/rules/course.rules.
 # Mapping and limitations: course-materials/agent-configs/codex/PERMISSIONS.md.
