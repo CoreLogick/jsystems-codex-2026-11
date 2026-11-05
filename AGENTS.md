@@ -109,3 +109,11 @@ A task is complete only when:
 - Verification for the changed scope passed with no errors or warnings
 - Runtime changes passed Manual QA on the actual UI, CLI or API, with screenshots or command/request evidence and the application's own visual reference where applicable; documentation-only work passed its scoped checks
 - The commit message is focused and the repository is in a consistent, reviewable state
+
+## Code Review Rules
+
+- Report newly introduced correctness or security defects with a concrete failing scenario and affected lines; distinguish verified findings from missing evidence.
+- Review the actual application against its agreed PRD/ADRs and source. Course examples are requirements only when explicitly selected; course-documentation changes need scoped checks, not an unrelated app build.
+- Prioritize authorization, secret handling and streaming/error paths when affected. Use synthetic data and never suggest publishing credentials or participant identifiers.
+- Do not weaken tests to satisfy a finding. State which checks actually ran and review the current PR head; an old-head review or silence is not approval.
+- When a PR changes `course-materials/`, review those changed teaching files within the PR scope; do not browse unrelated course-library files.
