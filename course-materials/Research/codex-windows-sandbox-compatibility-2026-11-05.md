@@ -77,3 +77,12 @@ The user subsequently reported a successful local session with `course-tools` se
 In the existing assistant executor, subsequent default and explicitly escalated safe probes both remained AppContainer/low integrity; gh returned 401 and Chrome failed with Crashpad/pipe errors. This observation does not establish why a live permission change did not affect that executor, nor prove that low integrity alone caused the failures. Do not infer cache behavior, daemon state, or a separate runtime architecture solely from these results. The positive user-side local session and this unchanged executor are distinct observations.
 
 Selected `allow` rules permit matching commands outside the sandbox. The ordinary permission profile still governs sandboxed commands. `network.enabled=true` enables outbound command networking; without an active proxy the domain table does not constrain direct destinations. `course-tools` has no secret-file deny-read rules. These facts must be explained when recommending the profile for synthetic-data training VMs.
+
+
+## Normal daemon confirmation and approval reviewer
+
+After a full restart, the user explicitly confirmed that an ordinary `codex` session was connected to the active daemon and worked with the custom course profile. This supersedes the earlier uncertainty about whether the successful user-side session used `--no-daemon`.
+
+All three course configuration files explicitly combine `course-tools`, `approval_policy = "on-request"` and `approvals_reviewer = "auto_review"`. The configuration acceptance check now protects that combination. Official documentation defines it as automatic review for eligible approval requests with a custom permission boundary; the menu's profile label alone does not establish the reviewer setting. It is not a guarantee that a separate running chat has no UI/session override.
+
+Post-restart probes from the existing assistant executor still returned AppContainer/low-integrity metadata. A read-only gh call returned 401; Git push --dry-run failed in Credential Manager/MSYS startup; Playwright about:blank failed in Chrome IPC/Crashpad startup; querying the running daemon version was denied by Windows. No remote branch or PR was changed by these probes. The active assistant execution policy explicitly routes escalations to auto_review, but approval did not remove that observed process containment. This remains an unresolved executor-specific behavior, not evidence that the user's ordinary daemon session or stored GitHub login failed.

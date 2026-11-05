@@ -1,11 +1,15 @@
 # Codex configuration examples
 
+The current Windows course baseline is CLI 0.166.0 with `course-tools` as its default permission profile. Strict and narrower teaching examples remain available. Read the [Polish participant procedure](WINDOWS-`UICKSTART-PL.md) for daemon restart and the [dated evidence report](../../Research/codex-windows-sandbox-compatibility-2026-11-05.md) for measured limits.
+
+`default_permissions = "course-tools"` combines with `approval_policy = "on-request"` and `approvals_reviewer = "auto_review"`. These are independent controls: the custom profile retains filesystem/network boundaries while eligible approval requests go to the automatic reviewer. A profile label in the permissions picker alone is not proof that review is off. Rule `allow` matches need no new review; `prompt` matches route to the reviewer; `forbidden` still blocks. See [Auto-review](https://learn.chatgpt.com/docs/sandboxing/auto-review).
+
 The examples target Codex CLI 0.162.1 and were re-checked on 2026-10-31 with 0.166.0 (the project config loads without errors and a `.env` read is refused): named filesystem/network permission profiles, automatic approval review and Starlark command rules. Read [PERMISSIONS.md](PERMISSIONS.md) for the Claude mapping, platform limits, Windows prompts and doctor diagnostics.
 
 | File | Use |
 |---|---|
-| [config.toml](config.toml) | Complete example with model/provider/MCP settings and five permission profiles |
-| [permissions.toml](permissions.toml) | Minimal permission example with the same five profiles |
+| [config.toml](config.toml) | Complete example with model/provider/MCP settings and six named permission profiles |
+| [permissions.toml](permissions.toml) | Minimal permission example with the same six named profiles |
 | [rules/course.rules](rules/course.rules) | Curated `allow`, `prompt` and `forbidden` command examples |
 | [examples/claude-command-parity.rules](examples/claude-command-parity.rules) | Inactive literal comparison with Claude Bash permissions |
 | [PERMISSIONS.md](PERMISSIONS.md) | Semantics, installation, Windows behavior and validation |

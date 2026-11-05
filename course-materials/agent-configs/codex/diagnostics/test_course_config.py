@@ -31,6 +31,7 @@ class CourseConfigTests(unittest.TestCase):
                 self.assertIs(data["features"]["prefer_mxc"], False)
                 self.assertIsNot(data["features"].get("network_proxy"), True)
                 self.assertEqual(data["approval_policy"], "on-request")
+                self.assertEqual(data["approvals_reviewer"], "auto_review")
 
     def test_strict_profiles_still_have_their_denials(self):
         for path in CONFIGS:

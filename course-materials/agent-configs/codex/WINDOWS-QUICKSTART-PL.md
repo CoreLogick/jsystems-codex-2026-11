@@ -50,6 +50,25 @@
 Domyślny profil jest kompromisem kursowym, nie granicą do pracy z produkcyjnymi sekretami. Nie umieszczaj sekretów w repozytorium ani nie dodawaj ich do promptów. Reguły poleceń ograniczają konkretne wzorce, a nie wszystkie możliwe warianty składni czy skrypty. Kwalifikująca się eskalacja może uruchomić dozwolone narzędzie jako interaktywny użytkownik Windows, więc może użyć jego logowania i przeglądarki. Nie zatwierdzaj nieznanych skryptów.
 
 
+### Profil course-tools i „Approve for me”
+
+To dwa niezależne ustawienia. Profil wybiera granice plików i sieci; recenzent zgód decyduje, kto ocenia prośby o dodatkowy dostęp. Kursowa konfiguracja ma jednocześnie:
+
+```toml
+default_permissions = "course-tools"
+approval_policy = "on-request"
+approvals_reviewer = "auto_review"
+```
+
+Ta kombinacja w CLI włącza automatycznego recenzenta przy własnym profilu uprawnień. Sam napis course-tools w menu /permissions nie dowodzi wyłączenia auto-review. Zmiana profilu i wybór gotowego trybu w interfejsie mogą zmienić ustawienia rozmowy; jeśli masz wątpliwość, sprawdź efektywną konfigurację bieżącej rozmowy, nie tylko plik na dysku. Wznowiona rozmowa lub polityka administratora może mieć inne wartości.
+
+- Zwykła dozwolona praca w sandboxie nie potrzebuje dodatkowej recenzji.
+- Pasująca reguła allow już zezwala na określone polecenie poza sandboxem; nie wywołuje recenzenta przy każdym użyciu.
+- Reguła prompt lub kwalifikująca się prośba o eskalację trafia do auto-review.
+- Reguła forbidden nadal blokuje polecenie. Auto-review nie przyznaje dowolnego dostępu i może odmówić działania.
+
+Automatyczny recenzent nie zastępuje wyraźnej zgody prowadzącego, jeśli zadanie wymaga jej przed publikacją na main. [Oficjalne ustawienia Auto-review](https://learn.chatgpt.com/docs/sandboxing/auto-review).
+
 ### Co oznacza „low integrity”
 
 Windows przypisuje procesom poziomy uprawnień. Zwykły PowerShell zwykle ma poziom „medium”, a uruchomiony jako administrator „high”. „Low” oznacza dodatkowe ograniczenie: taki proces nie może normalnie zmieniać zasobów oznaczonych wyższym poziomem, np. plików zwykłych aplikacji. To etykieta ochrony systemowej, a nie ocena jakości programu ani informacja o awarii. AppContainer dodaje własne ograniczenia do tego poziomu. Sam odczyt „low” nie dowodzi, dlaczego gh nie widzi logowania lub dlaczego Chrome nie startuje; te zachowania trzeba sprawdzić osobno. [Opis Microsoft](https://learn.microsoft.com/en-us/windows/win32/secauthz/mandatory-integrity-control).
