@@ -1,5 +1,12 @@
 # UPDATES !!!
 
+## Po dniu 2 (5.11)
+
+- Dokumentacja i gałąź implementacji projektu: [PR #6](https://github.com/LucasMatuszewski/jsystems-codex-2026-11/pull/6), gałąź `feature/hardware-service-copilot` - PRD, ADR i plan.
+- Design system x-kom: [PR #3](https://github.com/LucasMatuszewski/jsystems-codex-2026-11/pull/3).
+- Gałąź `main` pozostaje bazą startową kursu z materiałami i aktualizacjami.
+- Dzień 2: [podsumowanie](course-materials/zoom-summary-chat-history/day-2-summary.md) i [historia czatu](course-materials/zoom-summary-chat-history/day-2-chat-history.md).
+
 ## Po dniu 1 (4.11)
 
 - Projekt zaczniemy od wyboru pomysłu, PRD, ADR i planu; kodu aplikacji jeszcze nie ma.
