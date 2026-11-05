@@ -359,10 +359,11 @@ Wiadomości publiczne w kolejności chronologicznej. Reakcje oznaczają zliczeni
 
 - **16:43 — Łukasz Matuszewski:** https://developer.chrome.com/docs/ai/webmcp?hl=pl
 
-- **17:16 — Łukasz Matuszewski:** TODO:  
-  add instruction in AGENTS.md to always first use Context7, and only search in Web when something could not be found in Context7. In case of CLI tools the first place to search should always be the built-in --help, eg. `gh --help` for specific tools or commands, and context7 if not enough, web as last resort.  
-  Poproś o research agenta na etapie ADR, niech pomoże w podjęciu decyzji.  
-  test Desktop app with Question mode, it should work better than in CLI right now (hopefully they will fix it soon)  
-  Ask to create a Plan with multiple subagents and with Luna and Terra as workers, the orchestrator should decide which model should do which task based on the complexity of the task.  
-  Optionaly (in the plan) ask it to delegate to OpenCode in headless mode with Xiaomi MiMo model (it is configured inside OpenCode for you) - plan should provide short instruction how to delegate to opencode in headless mode.  
-  Ask for review of the consistency of PRD, ADR and Plan before starting it. Agent should fix any issues first.
+- **17:16 — Łukasz Matuszewski:** TODO:
+
+  - add instruction in AGENTS.md to always first use Context7, and only search in Web when something could not be found in Context7. In case of CLI tools the first place to search should always be the built-in --help, eg. `gh --help` for specific tools or commands, and context7 if not enough, web as last resort.
+  - Poproś o research agenta na etapie ADR, niech pomoże w podjęciu decyzji.
+  - test Desktop app with Question mode, it should work better than in CLI right now (hopefully they will fix it soon)
+  - Ask to create a Plan with multiple subagents and with Luna and Terra as workers, the orchestrator should decide which model should do which task based on the complexity of the task.
+  - Optionaly (in the plan) ask it to delegate to OpenCode in headless mode with Xiaomi MiMo model (it is configured inside OpenCode for you) - plan should provide short instruction how to delegate to opencode in headless mode.
+  - Ask for review of the consistency of PRD, ADR and Plan before starting it. Agent should fix any issues first.
