@@ -16,9 +16,10 @@ sandbox = "elevated"
 
 [features]
 prefer_mxc = false
+network_proxy = false
 ```
 
-Merge entries into existing tables; do not create duplicate tables. Comment active legacy `sandbox_mode` and remove legacy `[sandbox_workspace_write]` when selecting named permission profiles. The built-in workspace default is suitable across projects. The selected legacy Windows backend is the measured course baseline; managed policy and explicit overrides can take precedence.
+The explicit `network_proxy = false` replaces any earlier enabled user setting. Merge entries into existing tables; do not create duplicate tables. Comment active legacy `sandbox_mode` and remove legacy `[sandbox_workspace_write]` when selecting named permission profiles. The built-in workspace default is suitable across projects. The selected legacy Windows backend is the measured course baseline; managed policy and explicit overrides can take precedence.
 
 After active work is finished, run these from normal host PowerShell:
 

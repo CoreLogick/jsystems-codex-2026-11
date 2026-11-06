@@ -83,7 +83,7 @@ prefer_mxc = false
 # Keep the proxy OFF in the tested course baseline (project and user settings).
 # If separately needed, validate user-level activation and daemon lifecycle first;
 # project/user proxy mismatches have caused repeated Windows setup (#54441).
-# network_proxy = true # Enforce domain rules when a network-enabled permission profile is selected.
+network_proxy = false
 hooks = true      # Run hooks from hooks.json (see Codex hooks docs)
 apps = true
 multi_agent = true # Allow spawning/using multiple agents (if supported by your build).

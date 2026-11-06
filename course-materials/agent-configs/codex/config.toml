@@ -76,7 +76,7 @@ sandbox = "elevated"
 [features]
 # Tested course baseline; MXC requires a separate acceptance run.
 prefer_mxc = false
-# network_proxy = true            # Enforce domain rules for the selected network-enabled profile.
+network_proxy = false
 multi_agent = true               # Allow spawning/using multiple agents (if supported by your build).
 
 # ----------------

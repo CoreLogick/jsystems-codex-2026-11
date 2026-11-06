@@ -1,5 +1,6 @@
 """Acceptance checks for the course configuration; no provider calls or secret reads."""
 import json
+import re
 from pathlib import Path
 import subprocess
 import tomllib
@@ -29,9 +30,20 @@ class CourseConfigTests(unittest.TestCase):
                 data = tomllib.loads(path.read_text(encoding="utf-8-sig"))
                 self.assertEqual(data["windows"]["sandbox"], "elevated")
                 self.assertIs(data["features"]["prefer_mxc"], False)
-                self.assertIsNot(data["features"].get("network_proxy"), True)
+                self.assertIs(data["features"].get("network_proxy"), False)
                 self.assertEqual(data["approval_policy"], "on-request")
                 self.assertEqual(data["approvals_reviewer"], "auto_review")
+
+    def test_user_merge_instructions_disable_an_existing_network_proxy(self):
+        for name in ("README.md", "WINDOWS-QUICKSTART-PL.md"):
+            with self.subTest(document=name):
+                text = (ROOT / "course-materials/agent-configs/codex" / name).read_text(encoding="utf-8")
+                snippet = re.search(r"```toml\n(.*?)```", text, re.DOTALL).group(1)
+                settings = tomllib.loads(snippet)
+                existing_features = {"network_proxy": True, "unrelated_feature": True}
+                existing_features.update(settings["features"])
+                self.assertIs(existing_features["network_proxy"], False)
+                self.assertIs(existing_features["unrelated_feature"], True)
 
     def test_strict_profiles_still_have_their_denials(self):
         for path in CONFIGS:

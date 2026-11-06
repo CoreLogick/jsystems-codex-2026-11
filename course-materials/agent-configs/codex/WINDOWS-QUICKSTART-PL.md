@@ -31,9 +31,10 @@ sandbox = "elevated"
 
 [features]
 prefer_mxc = false
+network_proxy = false
 ```
 
-Zakomentuj inne aktywne `sandbox_mode` i usuń aktywną tabelę `[sandbox_workspace_write]`, jeśli przechodzisz na ten system profili. Nie łącz obu systemów konfiguracji. `prefer_mxc = false` wraz z wyborem `elevated` ustawia kursowy wariant Windows. Polityka administratora lub jawne nadpisanie ustawień nadal może mieć wyższy priorytet.
+Zakomentuj inne aktywne `sandbox_mode` i usuń aktywną tabelę `[sandbox_workspace_write]`, jeśli przechodzisz na ten system profili. Nie łącz obu systemów konfiguracji. `prefer_mxc = false` wraz z wyborem `elevated` ustawia kursowy wariant Windows. Jawne `network_proxy = false` wyłącza także wcześniejsze ustawienie użytkownika. Polityka administratora lub jawne nadpisanie ustawień nadal może mieć wyższy priorytet.
 
 ## 2. Zrestartuj serwer i rozpocznij nową rozmowę
 
