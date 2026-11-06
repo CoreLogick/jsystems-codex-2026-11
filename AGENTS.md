@@ -34,6 +34,10 @@ course-materials/    Notes, scripts, examples, research
 
 ## Agent Workflow
 
+Run every GitHub CLI (`gh`) command outside the sandbox. Authentication is available only in the host environment; do not use a failed sandbox authentication check as evidence that `gh` is logged out.
+
+Run every Playwright CLI command outside the sandbox. Browser execution is available only in the host environment; do not use a failed sandbox launch as evidence that Playwright or its browsers are unavailable.
+
 ### When implementing new or refactoring functionality
 1. Read the relevant PRD and ADR files for the affected area.
 2. Define the expected behavior from the specification before writing or changing any code.
