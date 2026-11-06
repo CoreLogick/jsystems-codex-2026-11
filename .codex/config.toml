@@ -30,7 +30,7 @@ personality = "pragmatic"          # Style/tone preset (e.g., pragmatic/friendly
 # Filesystem permissions mapped from the root .claude/settings.json.
 # Beta profiles replace legacy sandbox_mode / sandbox_workspace_write settings.
 # Higher-precedence permission selectors win; avoid mixing legacy and named-profile selectors.
-default_permissions = "course-root"
+default_permissions = "course-tools"
 # Command allow/prompt/forbidden examples: .codex/rules/course.rules.
 # Mapping and limitations: course-materials/agent-configs/codex/PERMISSIONS.md.
 
@@ -300,6 +300,15 @@ enabled = false
 # Beta permission profiles; use instead of sandbox_mode / sandbox_workspace_write.
 # Higher-precedence sandbox_mode/--sandbox can select legacy behavior; inspect the effective profile.
 # See course-materials/agent-configs/codex/PERMISSIONS.md for scope and platform limits.
+
+# WARNING: no OS deny-read rules for .env/secrets in this default profile. Never keep real secrets in this course workspace.
+[permissions.course-tools]
+description = "Default course editing: workspace/temp writes, network enabled, no secret-file deny-read; rules allow selected host commands outside the sandbox."
+extends = ":workspace"
+[permissions.course-tools.network]
+enabled = true
+[permissions.course-tools.network.domains]
+"*" = "allow"
 
 [permissions.course-workspace]
 description = "Workspace editing; named environment files and secrets are unreadable."
