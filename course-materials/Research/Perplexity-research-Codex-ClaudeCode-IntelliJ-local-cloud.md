@@ -1,3 +1,5 @@
+> Aktualizacja 5.11.2026: poniższa historyczna teza, że Codex nie jest w ACP Registry, jest nieaktualna. JetBrains udostępnia Codex przez AI Chat -> wybór agenta -> Install From ACP Registry (IDE 2026.1+ i zgodny plugin). Użyj [oficjalnej instrukcji ACP](https://www.jetbrains.com/help/ai-assistant/acp.html) i [bazy JetBrains](https://youtrack.jetbrains.com/projects/PY/articles/SUPPORT-A-3700/Using-Claude-Codex-and-Cursor-agents-in-JetBrains-IDEs). Nie uruchamiaj `codex acp`: CLI nie ma takiej komendy. Obecny adapter to [agentclientprotocol/codex-acp](https://github.com/agentclientprotocol/codex-acp); stary projekt zed-industries jest archiwalny. ACP nie gwarantuje zgodności funkcji z CLI, a obecna instrukcja JetBrains wyklucza WSL w tej integracji. Dalszą część traktuj jako materiał historyczny.
+
 <img src="https://r2cdn.perplexity.ai/pplx-full-logo-primary-dark%402x.png" style="height:64px;margin-right:32px"/>
 
 # research and compare Codex CLI with OpenCode. features, capabilities, pros and cons. Can we use multi-agent workflows with sub-agents in both of them? do they have long running tasks and memory as claude code CLI has? can we use any model with good function calling hosted on custom openai compatible endpoint with both of them? (e.g. OpenRouter).
@@ -874,7 +876,7 @@ Your intuition was approximately right but the actual support is **better than y
 
 No proxy needed, no hacks — it's in Settings → Third-party AI Providers, select provider, paste URL, Test Connection [^6_1]. So if the bank deploys a GLM 5 server internally, AI Assistant *can* talk to it. **But the real constraint remains network policy** — if the IDE can't reach the internal model server, that's an IT firewall issue, not a JetBrains limitation.
 
-## Codex and Claude Code in JetBrains — NOT ACP Agents
+## Historical claim, superseded 5.11.2026: Codex and Claude Code in JetBrains - NOT ACP Agents
 
 This is the important correction. You were right to be suspicious. Here's the exact picture [^6_3][^6_4][^6_5]:
 
@@ -889,7 +891,7 @@ This is the important correction. You were right to be suspicious. Here's the ex
 | Qwen Code | ✅ via ACP |
 | Auggie CLI | ✅ via ACP |
 | Mistral Vibe | ✅ via ACP |
-| **Codex CLI** | ❌ NOT in ACP Registry |
+| **Codex CLI** | Historical claim superseded 5.11.2026: Codex is available through the current ACP Registry integration; see correction above. |
 | **Claude Code** | ❌ NOT in ACP Registry |
 
 Codex and Claude Code are integrated via **direct proprietary SDK integrations**, not ACP [^6_3][^6_5]. This has a specific consequence: Zed had to build a custom wrapper for Claude Code because it *doesn't speak ACP natively*, and a separate adapter for Codex [^6_3]. JetBrains did the same — the Codex integration uses the OpenAI Codex SDK directly, which is why [^6_7] there are known issues trying to redirect it to custom OpenAI-compatible endpoints (it works only for the official OpenAI Codex endpoint). The Claude Code integration in JetBrains Air calls the Anthropic SDK directly [^6_8].

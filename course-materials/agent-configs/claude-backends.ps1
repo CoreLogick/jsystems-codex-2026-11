@@ -21,6 +21,17 @@
 # Check the active model inside Claude Code with:  /status
 # ----------------------------------------------------------------------------
 
+# Default editor for CLI tools; preserve the current editor if micro is absent.
+if (Get-Command micro -ErrorAction SilentlyContinue) {
+    $env:EDITOR = "micro"
+    $env:VISUAL = $env:EDITOR
+    $env:COPILOT_EDITOR = $env:EDITOR
+}
+# Alternative: uncomment all three lines for Zed.
+# $env:EDITOR = "zed --wait"
+# $env:VISUAL = $env:EDITOR
+# $env:COPILOT_EDITOR = $env:EDITOR
+
 # --- Skip permission prompts -------------------------------------------------
 # --dangerously-skip-permissions == --permission-mode bypassPermissions (no
 # checks at all) — containers/VMs only. Safer modern modes: auto, acceptEdits,

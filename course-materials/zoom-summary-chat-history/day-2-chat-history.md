@@ -367,3 +367,4 @@ Wiadomości publiczne w kolejności chronologicznej. Reakcje oznaczają zliczeni
   - Ask to create a Plan with multiple subagents and with Luna and Terra as workers, the orchestrator should decide which model should do which task based on the complexity of the task.
   - Optionaly (in the plan) ask it to delegate to OpenCode in headless mode with Xiaomi MiMo model (it is configured inside OpenCode for you) - plan should provide short instruction how to delegate to opencode in headless mode.
   - Ask for review of the consistency of PRD, ADR and Plan before starting it. Agent should fix any issues first.
+  - Optional: remove the instruction to chat in Polish from AGENTS.md if you are comfortable with English or use Handy.computer with translation.

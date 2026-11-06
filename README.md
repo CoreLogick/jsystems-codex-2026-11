@@ -14,6 +14,12 @@
 - Design system x-kom: [PR #3](https://github.com/LucasMatuszewski/jsystems-codex-2026-11/pull/3).
 - Gałąź `main` pozostaje bazą startową kursu z materiałami i aktualizacjami.
 - Dzień 2: [podsumowanie](course-materials/zoom-summary-chat-history/day-2-summary.md) i [historia czatu](course-materials/zoom-summary-chat-history/day-2-chat-history.md).
+- Nowe instrukcje: [formularze pytań i fragment AGENTS.md](course-materials/Research/codex-interactive-questions-2026-11-05.md), [jednorazowa kontynuacja po odnowieniu limitu](course-materials/agent-configs/codex/scheduled-continuation/README.md) oraz [przegląd spójności dokumentów przed implementacją](course-materials/Prompt%20examples/Spec-consistency-review-and-implementation.md).
+- Przykłady konfiguracji Bash i PowerShell używają teraz `micro` jako domyślnego edytora; `zed --wait` pozostaje alternatywą.
+
+- [Fork -> PR -> review -> odpowiedź agenta](course-materials/Research/github-fork-pr-review-workshop-2026-11-05.md): uprawnienia tokenu, Copilot/Codex/Claude i konfiguracja własnego repo. [Ustawienia firmowe: Business workspace, GitHub i Copilot](course-materials/Research/github-code-review-company-settings-2026-11-05.md).
+- [Koszty i historia użycia](course-materials/Research/codex-analytics-and-usage-history-2026-10-14.md), [VS Code/Copilot](course-materials/Research/copilot-vscode-autopilot-permissions-subagents.md), [JetBrains/ACP](course-materials/agent-configs/jetbrains-ai-assistant/README.md) oraz [menedżery agentów](course-materials/Research/agent-managers-and-remote-agents.md). Starsze porównania mają datowane ustawienia; aktualny sposób ACP dopisano w materiale JetBrains.
+- Konta szkoleniowe są przewidziane do ćwiczeń orientacyjnie **do końca listopada**, w ramach dostępnych limitów. Możecie używać tego samego konta także na własnym komputerze; wiadomości z linkiem lub kodem logowania powinny docierać przez włączone przekazywanie poczty. [Oddzielny CODEX_HOME dla konta kursowego](course-materials/agent-configs/codex/separate-course-account/README.md) rozdziela konfigurację, historię i logowanie od konta prywatnego lub firmowego; sam profil `-p` nie przełącza konta.
 
 **Dobra wiadomość: dodatkowe resety limitów Codex!**
 

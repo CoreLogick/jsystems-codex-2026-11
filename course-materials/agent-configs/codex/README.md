@@ -58,3 +58,8 @@ Automatic review is independent of the permission profile: `on-request` + `auto_
 ## Separate course account
 
 To use a training account next to a company one, see [separate-course-account](separate-course-account/README.md): a second `CODEX_HOME` with analysis and implementation profiles.
+
+## Pytania i kontynuacja sesji
+
+- [Formularze pytań, Plan i tymczasowy fragment AGENTS.md](../../Research/codex-interactive-questions-2026-11-05.md).
+- [Jednorazowa kontynuacja po odnowieniu limitu](scheduled-continuation/README.md): dry-run domyślnie; dokładny UUID i jeden komunikat do kolejki. To nie jest automatyczna reaktywacja celu `/goal`.
