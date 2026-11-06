@@ -3,6 +3,8 @@ import importlib.util
 from pathlib import Path
 import tomllib
 import unittest
+from types import SimpleNamespace
+from unittest.mock import patch
 
 SPEC = importlib.util.spec_from_file_location("probe", Path(__file__).with_name("windows_sandbox_probe.py"))
 probe = importlib.util.module_from_spec(SPEC)
@@ -11,8 +13,31 @@ SPEC.loader.exec_module(probe)
 
 class ProbeTests(unittest.TestCase):
     def test_toml_roundtrip_preserves_paths_and_literal_text(self):
-        value = {"filesystem": {"C:/synthetic/a b.txt": "deny", ":workspace_roots": {".": "write"}}, "note": 'a "quote"\n$not_a_command'}
+        value = {"filesystem": {"C:/synthetic/a b.txt": "deny",
+                                "C:/synthetic/zażółć/🚀/denied.txt": "deny",
+                                ":workspace_roots": {".": "write"}},
+                 "note": 'a "quote"\n$not_a_command'}
         self.assertEqual(tomllib.loads("value = " + probe.toml_literal(value))["value"], value)
+
+    def test_agent_trial_uses_host_interpreter_and_literal_powershell_arguments(self):
+        interpreter = "C:/Tools/Python user's $literal/python.exe"
+        script = "C:/synthetic/a b/$literal/windows_sandbox_probe.py"
+        probe_dir = Path("C:/synthetic/user's $literal/probe")
+        playwright = "C:/synthetic/npm tools/playwright-cli.cmd"
+        with patch.object(probe.sys, "executable", interpreter), patch.object(
+            probe.subprocess, "run", return_value=SimpleNamespace(returncode=0, stdout="", stderr="")
+        ) as run:
+            probe.agent_trials("codex.exe", Path("C:/repo"), script, probe_dir,
+                               playwright, "example/synthetic", "abc", ["elevated"])
+        self.assertEqual(run.call_count, 2)
+        for call in run.call_args_list:
+            command = call.args[0][-1].split("\n\n", 1)[1].splitlines()[0]
+            self.assertEqual(command,
+                "& 'C:/Tools/Python user''s $literal/python.exe' "
+                "'C:/synthetic/a b/$literal/windows_sandbox_probe.py' '--child' "
+                "'--probe-dir' '" + str(probe_dir).replace("'", "''") + "' "
+                "'--github-repo' 'example/synthetic' '--playwright' "
+                "'C:/synthetic/npm tools/playwright-cli.cmd'")
 
     def test_strict_probe_does_not_modify_course_profile(self):
         original = {"course-root": {"extends": ":workspace"}}

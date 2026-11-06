@@ -25,7 +25,7 @@ MARKER = "COURSE_PROBE_JSON:"
 
 def toml_literal(value):
     if isinstance(value, str):
-        return json.dumps(value, ensure_ascii=True)
+        return json.dumps(value, ensure_ascii=False)
     if isinstance(value, bool):
         return str(value).lower()
     if isinstance(value, (int, float)):
@@ -222,9 +222,12 @@ def agent_trials(codex, repo, script, probe_dir, playwright, github_repo, run_id
         results[backend] = {}
         for profile in ("course-root", "course-cli-probe"):
             session = "course-probe-" + run_id + "-" + backend + "-" + profile
+            python_argv = [sys.executable, script, "--child", "--probe-dir", str(probe_dir),
+                           "--github-repo", github_repo, "--playwright", str(playwright)]
+            # PowerShell single-quoted arguments preserve spaces, apostrophes and literal $ text.
+            python_command = "& " + " ".join("'" + arg.replace("'", "''") + "'" for arg in python_argv)
             commands = [
-                'python "' + script + '" --child --probe-dir "' + str(probe_dir) +
-                '" --github-repo ' + github_repo + ' --playwright "' + str(playwright) + '"',
+                python_command,
                 "gh repo view " + github_repo + " --json nameWithOwner",
                 " ".join(playwright_command("playwright-cli.cmd", session, "open")),
                 " ".join(playwright_command("playwright-cli.cmd", session, "snapshot")),

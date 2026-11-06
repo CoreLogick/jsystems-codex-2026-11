@@ -99,3 +99,12 @@ The owning user config was subsequently inspected for sandbox/approval selectors
 At the user's explicit request, the global config was backed up and updated atomically: danger-full-access remains as a commented demonstration, default_permissions=:workspace, approval_policy=on-request, approvals_reviewer=auto_review, windows.sandbox=elevated, prefer_mxc=false. Parsed comparison confirmed no unrelated settings changed. This verifies the file update; it does not claim that the already-running server/executor reloaded it.
 
 Reusable full/minimal user examples now default to :workspace and include opt-in course-tools definitions. The trusted course project's default remains course-tools. Documentation explains user-wide profile installation and command-rule scope. Restart the daemon after active work has finished and validate a fresh normal session; no daemon restart was performed by the assistant during this change.
+
+
+## Corrections Log
+
+- 2026-11-06, PR9-C1: Preserve Unicode directly in diagnostic TOML strings. Previously JSON ASCII escaping produced invalid TOML surrogate pairs for non-BMP checkout paths; round-trip acceptance must cover Polish letters and emoji.
+- 2026-11-06, PR9-C2: Agent diagnostics must invoke the same absolute Python interpreter as the host control, with PowerShell literal argument quoting and the call operator. Previously bare `python` depended on PATH and manually quoted arguments could expand shell text.
+- 2026-11-06, PR9-C3: Explicitly set `features.network_proxy = false` in the project, reusable examples and both user-merge snippets. Previously commented settings could retain an existing `true` value, contradicting the tested no-proxy baseline.
+
+These are focused corrections within the existing diagnostic/configuration contract. They do not change live user settings or establish a fresh native Windows sandbox acceptance result.
