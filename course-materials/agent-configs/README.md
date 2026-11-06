@@ -125,11 +125,15 @@ Sources: [Copilot environment variables](https://docs.github.com/en/copilot/refe
 
 ## Codex permissions
 
+Start with the [user-wide Windows baseline](codex/README.md#user-wide-windows-baseline). The reusable config examples default to :workspace and include optional course-tools definitions; the active course project selects course-tools. Install definitions and reviewed rules at user scope if selecting that profile across repositories.
+
 See [Claude-to-Codex permission mapping](codex/PERMISSIONS.md) for annotated TOML filesystem profiles, command `allow` / `prompt` / `forbidden` rules, and their limits. `codex/config.toml` includes these permissions directly in the main Codex example; `codex/permissions.toml` provides the same profiles as a minimal standalone example. Copy the configuration together with the reviewed `codex/rules/` files. `codex/examples/claude-command-parity.rules` is an inactive syntax comparison with broad allowances; use `codex/rules/course.rules` for the curated course policy.
 
-The active project `.codex/config.toml` deliberately leaves `features.network_proxy` unset. Enable it in `~/.codex/config.toml` using the [user-level example](codex/config.toml), so project and background daemon threads agree. Domain rules require that user-level activation; without it, do not assume the configured domain list is enforced. See the [activation prerequisite](codex/PERMISSIONS.md#project-and-user-proxy-activation) and [Windows sandbox troubleshooting](../Research/codex-windows-sandbox-troubleshooting-2026-10-15.md).
+The active project and both user examples leave `features.network_proxy` disabled for the tested Windows baseline. Do not enable it during the quickstart. Domain tables, including the optional two-host profile, require a separately activated and validated proxy to constrain destinations. See the [optional proxy setup](codex/PERMISSIONS.md#project-and-user-proxy-activation) and [Windows sandbox troubleshooting](../Research/codex-windows-sandbox-troubleshooting-2026-10-15.md).
 
 ## Codex profiles
+
+For the measured Windows course baseline, use the project default course-tools, not the strict course-root: [participant steps in Polish](codex/WINDOWS-QUICKSTART-PL.md) and [evidence report](../Research/codex-windows-sandbox-compatibility-2026-11-05.md). Context7 is enabled in the root project config; Playwright MCP stays off while the CLI is used for manual QA.
 
 Codex reads profile files only from `~/.codex/`. Copy them there, then choose one:
 

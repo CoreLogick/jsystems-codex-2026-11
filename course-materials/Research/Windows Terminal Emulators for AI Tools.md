@@ -1,3 +1,5 @@
+> **Course VM check, 2026-11-05:** WezTerm was not found on PATH or standard installation paths; no WezTerm run, Lua config validation, or head-to-head stability test was performed. Treat comparative usability claims below as hypotheses, not course measurements. WezTerm is a terminal emulator and does not select or repair Codex's sandbox, credential access, network, browser IPC, or process lifecycle. The course uses PowerShell and the terminal already installed on the VM. See the [measured Windows sandbox report](codex-windows-sandbox-compatibility-2026-11-05.md) and [Polish participant steps](../agent-configs/codex/WINDOWS-QUICKSTART-PL.md).
+
 # Windows Terminal emulators recommended for agentic AI tools
 
 > What are best terminals for Cloud Code, Gemini CLI, Cursor CLI or Codex CLI. I use Ghostty on Linux (also on MacOS), and iTerm on MacOS. Something similar for Windows?

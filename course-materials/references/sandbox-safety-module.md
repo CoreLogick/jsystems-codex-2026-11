@@ -1,3 +1,5 @@
+> **Windows Codex course update (5.11.2026):** participants use the tested project profile course-tools with sandbox and on-request approvals. It does not OS-deny reads of .env/secrets; do not keep secrets in the exercise workspace. course-root is the strict opt-in. Read the [Polish step-by-step procedure](../agent-configs/codex/WINDOWS-QUICKSTART-PL.md) and [evidence report](../Research/codex-windows-sandbox-compatibility-2026-11-05.md) before teaching the Windows executor behavior.
+
 # Sandbox Safety Mini-Module
 
 ## Cel modułu (10-25 min)
