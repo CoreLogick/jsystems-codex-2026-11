@@ -1,63 +1,67 @@
-# App
+# Deck Copilot - local foundation
 
-This folder will contain AI Chat, built during the course with TypeScript, React and the Vercel AI SDK on the server and client. It currently contains no application or package manifest. Participants may choose their own idea through the same process.
+This branch contains the Next.js scaffold, domain contracts, SQLite persistence foundation, and a bilingual new-deck form. It is **not yet a working AI deck/PDF generator**.
 
-## How to start
+## What works now
 
-The app is scaffolded live during the course through a structured process:
+- `/` redirects to `/new`.
+- The form validates required fields and supports Polish and English.
+- Switching language preserves entered values; the selected language survives reload.
+- All five approved local example photos are displayed.
+- SQLite repositories are tested using isolated temporary databases, including restart reads, state/version conflicts, ordered writes, and closed-session protection.
 
-1. **Research** - use agents to research and validate the project idea
-2. **PRD** - generate a Product Requirements Document (`../docs/PRD.md`)
-3. **ADR** - generate Architecture Decision Records (`../docs/ADR/`) to choose the tech stack
-4. **Scaffold** - choose an AI SDK starter compatible with the ADR (Next.js or Vite with a TypeScript backend)
-5. **Implement** - build features with agents using TDD
+## What is not connected yet
 
-## Checklist
+The session API, analysis, chat, retry coordinator, history, and PDF generation are not implemented. Valid form submission cannot complete yet, and the History link is not a working history browser. Startup does not create a production database or run AI calls.
 
-Use this checklist during scaffolding. Some items are provided by the boilerplate (e.g. `create-next-app` ships `tsconfig.json`, ESLint config). Others you add explicitly.
+T05 is blocked by the OpenRouter workspace policy for `typesafe/jev-1.14`. Allow that exact model for the application's key/member in Workspace -> Guardrails -> Model & provider access before resuming provider integration. Do not substitute a different model or a runtime mock.
 
-### Project setup
-- [ ] Choose framework (Next.js or Vite with Hono/Express for the group project) - record in ADR
-- [ ] Initialize project (e.g. `npx create-next-app@latest` or equivalent)
-- [ ] TypeScript config (`tsconfig.json`)
-- [ ] Package manager chosen (npm / pnpm / bun)
+## Start on Windows / PowerShell
 
-### Code quality
-- [ ] ESLint config (`eslint.config.js`)
-- [ ] Prettier config (`.prettierrc`, `.prettierignore`)
-- [ ] `.editorconfig` (optional but recommended)
+Tested with Node.js `24.22.1` and npm `11.19.1`. Run npm commands from `app/`.
 
-### Testing
-- [ ] Unit/integration test runner (Vitest / Jest)
-- [ ] E2E test runner (Playwright)
-- [ ] Test setup file (e.g. `test-setup.ts` with Testing Library matchers)
+```powershell
+cd D:\jsystems-codex-2026-11\app
 
-### Environment
-- [ ] `.env.example` with required env vars (API keys, ports)
-- [ ] `.env` created locally (gitignored)
-- [ ] `.gitignore` (node_modules, .env, build output, etc.)
+# First setup after cloning, or when dependencies are missing:
+npm ci
 
-### AI integration
-- [ ] Vercel AI SDK (`ai` on the server, `@ai-sdk/react` on the client)
-- [ ] API route / endpoint for chat
-- [ ] Model configuration (provider, model name, API key from env)
-- [ ] Compatible SDK/provider versions recorded in the lockfile
-- [ ] Synthetic AI SDK mock model for unit/integration tests without an API key
+# Build and run the production version:
+npm run build
+npm run start
+```
 
-### Design
-- [ ] Design tokens (`../assets/design-tokens.json`)
-- [ ] Tailwind CSS or equivalent
-- [ ] Logo and favicon (`../assets/`)
-- [ ] Design system doc (`../docs/design-guidelines.md`)
+Open **http://localhost:3000/new**. Keep the terminal running; stop the server with `Ctrl+C`. Port 3000 must be free. The current form preview does not require provider credentials.
 
-### Documentation
-- [ ] PRD (`../docs/PRD.md`)
-- [ ] ADRs (`../docs/ADR/`)
-- [ ] AGENTS.md in `app/` with stack-specific rules
+For development instead:
 
-## Notes
+```powershell
+npm run dev
+```
 
-- Don't create config files manually if the boilerplate provides them - it leads to conflicts.
-- Let the agent research and recommend the right boilerplate based on the ADR decisions.
-- Run installation, test and startup commands here once `package.json` exists; inspect its scripts first.
-- Keep this folder organized: separate routes, components, domain logic, and tests.
+The native `better-sqlite3` dependency was verified on the course VM. A fresh Windows machine may require the native build prerequisites documented in the [preflight evidence](../docs/plans/evidence/01-preflight.md); do not silently replace the driver if installation fails.
+
+## Verify
+
+```powershell
+npm run typecheck
+npm run lint
+npm run test
+npm run test:e2e
+```
+
+Run lint after E2E, not concurrently: Playwright recreates `test-results/`. The current verification has 30 passing Vitest tests and one explicitly unfinished cross-system TODO, plus one real-browser form-shell test. The browser test does not exercise successful generation and is not full product acceptance.
+
+## Later provider setup
+
+After the guardrail is fixed and provider integration resumes, keep local server-only settings in `app/.env.local`:
+
+```dotenv
+OPENROUTER_API_KEY=<your local server-only key>
+LLM_MODEL=openai/gpt-6-luna
+DECISION_MODEL=typesafe/jev-1.14
+```
+
+Never put the real key in a client variable, prompt, screenshot, fixture, or commit. Credentials alone do not enable the unwritten API routes.
+
+See the [implementation checkpoint](../docs/plans/01-vertical-slice-implementation-plan.md#13-continuation-checkpoint) and [verification evidence](../docs/plans/evidence/02-wave-a-continuation.md) for the exact resume point and remaining work.

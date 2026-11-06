@@ -40,3 +40,11 @@ playwright/.cache/
 /.idea
 # Playwright CLI output (may contain credentials)
 .playwright-cli/
+
+# Local application persistence
+/storage/*.db
+/storage/*.db-wal
+/storage/*.db-shm
+/storage/pdf_decks/*
+!/storage/pdf_decks/.gitkeep
+/storage/pdf_decks/*.tmp
