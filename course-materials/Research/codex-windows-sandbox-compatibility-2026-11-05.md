@@ -107,4 +107,6 @@ Reusable full/minimal user examples now default to :workspace and include opt-in
 - 2026-11-06, PR9-C2: Agent diagnostics must invoke the same absolute Python interpreter as the host control, with PowerShell literal argument quoting and the call operator. Previously bare `python` depended on PATH and manually quoted arguments could expand shell text.
 - 2026-11-06, PR9-C3: Explicitly set `features.network_proxy = false` in the project, reusable examples and both user-merge snippets. Previously commented settings could retain an existing `true` value, contradicting the tested no-proxy baseline.
 
+- 2026-11-06, PR9-C4: Date the `config/read` confirmation of `course-root` in `docs/tool-facts.md` as historical (2026-11-04). Previously it contradicted the current `course-tools` project default; a fresh-session check must expect `course-tools`, without inventing a new runtime measurement.
+
 These are focused corrections within the existing diagnostic/configuration contract. They do not change live user settings or establish a fresh native Windows sandbox acceptance result.
