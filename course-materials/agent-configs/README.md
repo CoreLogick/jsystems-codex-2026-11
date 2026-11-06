@@ -89,13 +89,15 @@ precedence](https://code.claude.com/docs/en/permissions).
 ## Copilot CLI editor
 
 Set `COPILOT_EDITOR` alongside `EDITOR` and `VISUAL`, so the CLI and other tools
-use the same editor. With VS Code installed and its `code` command in `PATH`,
-`--wait` keeps the calling process waiting until the file is closed.
+use the same editor. The course default is `micro`; install it and check that
+`micro --version` works first. It runs in the terminal and returns when closed.
+For Zed, use `zed --wait` instead; `--wait` keeps the caller waiting for the file.
 
 Bash, for the current shell:
 
 ```bash
-export EDITOR='code --wait'
+export EDITOR='micro'
+# export EDITOR='zed --wait' # Alternative: Zed.
 export VISUAL="$EDITOR"
 export COPILOT_EDITOR="$EDITOR"
 ```
@@ -103,7 +105,8 @@ export COPILOT_EDITOR="$EDITOR"
 PowerShell, for the current shell:
 
 ```powershell
-$env:EDITOR = 'code --wait'
+$env:EDITOR = 'micro'
+# $env:EDITOR = 'zed --wait' # Alternative: Zed.
 $env:VISUAL = $env:EDITOR
 $env:COPILOT_EDITOR = $env:EDITOR
 ```
@@ -113,11 +116,12 @@ example. CLI 1.0.89 lists precedence as `COPILOT_EDITOR`, `VISUAL`, `EDITOR`,
 while the online reference checked on 2026-10-26 lists a different order.
 Setting all three identically avoids relying on that discrepancy. Verify the
 real edit-and-return flow on the course VM; shell assignments do not prove
-editor integration. PowerShell and VS Code were not available in the audit
-environment, so that flow remains unverified there.
+editor integration. The native Windows/PowerShell micro and Zed flows were not
+verified in this audit. The profile examples select micro only when it is
+available, otherwise preserving the existing editor.
 
 Sources: [Copilot environment variables](https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-command-reference#environment-variables),
-[VS Code command line](https://code.visualstudio.com/docs/configure/command-line).
+[Zed CLI](https://zed.dev/docs/reference/cli).
 
 ## Codex permissions
 

@@ -19,7 +19,15 @@
 # ============================================================================
 
 # Set default editor for CLI tools
-export EDITOR=zed # or micro, nano, nvim, fresh, etc. (fast and lightweight TUI recommended)
+# Preserve the current editor if micro has not been installed yet.
+if command -v micro >/dev/null 2>&1; then
+    export EDITOR=micro
+    export VISUAL="$EDITOR" COPILOT_EDITOR="$EDITOR"
+fi
+# Alternative: uncomment all three lines for Zed.
+# export EDITOR='zed --wait'
+# export VISUAL="$EDITOR"
+# export COPILOT_EDITOR="$EDITOR"
 
 # ============================================================================
 # Claude Code: skipping permission prompts (updated 2026-06)
