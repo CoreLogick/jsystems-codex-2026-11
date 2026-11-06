@@ -8,7 +8,8 @@
 prefix_rule(pattern=["pwd"], decision="allow", justification="Print the current directory.", match=["pwd"], not_match=["cat README.md"])
 prefix_rule(pattern=["whoami",], decision="allow", justification="Print the current account.", match=["whoami"], not_match=["printenv"])
 
-# Narrow host-tool exceptions validated on the course Windows VM. Do not add
+# Host pilot validated gh repo view and the Playwright lifecycle; remaining gh
+# read subcommands are policy-checked examples, not separate Windows live results. Do not add
 # gh api, PR mutations, arbitrary browser code, uploads or shell wrappers.
 prefix_rule(pattern=[["gh", "gh.exe"], "repo", "view"], decision="allow", justification="Read repository metadata using the signed-in gh client.", match=["gh repo view owner/repo"], not_match=["gh repo delete owner/repo"])
 prefix_rule(pattern=[["gh", "gh.exe"], "pr", ["view", "list", "status", "checks"]], decision="allow", justification="Read pull request state using the signed-in gh client.", match=["gh pr view 1", "gh pr list", "gh pr status", "gh pr checks 1"], not_match=["gh pr edit 1"])

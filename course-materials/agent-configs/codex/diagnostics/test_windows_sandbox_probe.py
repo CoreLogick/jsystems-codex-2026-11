@@ -48,6 +48,16 @@ class ProbeTests(unittest.TestCase):
             probe.require_host({"is_appcontainer": True})
         probe.require_host({"is_appcontainer": False})
 
+    def test_legacy_sandbox_account_is_not_classified_as_host(self):
+        with self.assertRaises(RuntimeError):
+            probe.require_host({"is_appcontainer": False, "is_restricted": False,
+                                "integrity_level": "other", "account_kind": "codex_sandbox_account"})
+
+    def test_playwright_action_precedes_session_to_match_host_rule(self):
+        for action in ("open", "snapshot", "close"):
+            command = probe.playwright_command("playwright-cli.cmd", "course-probe-abc", action)
+            self.assertEqual(command[:2], ["playwright-cli.cmd", action])
+
     def test_playwright_actions_are_bounded_to_owned_session(self):
         command = probe.playwright_command("playwright-cli.cmd", "course-probe-abc", "open")
         self.assertIn("-s=course-probe-abc", command)

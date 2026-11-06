@@ -75,7 +75,7 @@ enabled = true
 [permissions.course-root]
 description = "Compatibility alias for course-workspace; identical strict filesystem and network permissions."
 extends = "course-workspace"
-# This named root preset inherits the default network and filesystem policy.
+# This named root preset inherits course-workspace network and filesystem policy.
 # Logs are available to sandboxed search commands; there is no directory deny.
 
 [permissions.course-review]

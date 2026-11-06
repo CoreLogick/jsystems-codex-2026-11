@@ -93,7 +93,9 @@ def execute(argv, cwd, timeout=90):
 
 
 def require_host(token):
-    if token.get("is_appcontainer") or token.get("is_restricted") or token.get("integrity_level") == "low":
+    if (token.get("is_appcontainer") or token.get("is_restricted")
+            or token.get("integrity_level") == "low"
+            or token.get("account_kind") == "codex_sandbox_account"):
         raise RuntimeError("Run this probe from normal Windows PowerShell, outside Codex command execution.")
 
 
@@ -148,7 +150,7 @@ def token_info():
 def playwright_command(executable, session, action):
     if action not in ("open", "snapshot", "close") or not re.fullmatch(r"course-probe-[a-z0-9-]+", session):
         raise ValueError("Only owned diagnostic sessions and bounded actions are allowed")
-    argv = [executable, "-s=" + session, action]
+    argv = [executable, action, "-s=" + session]
     if action == "open":
         argv.extend(["about:blank", "--browser=chrome", "--headed"])
     return argv

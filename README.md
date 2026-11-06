@@ -2,9 +2,10 @@
 
 ## Windows Codex sandbox — ważne przed ćwiczeniami (5.11)
 
-- Najpierw ustaw globalny sandbox użytkownika i wyłącz preferencję MXC według instrukcji poniżej, potem zrestartuj daemon. Repozytorium kursu wybiera profil course-tools.
+- Najpierw ustaw globalny sandbox użytkownika i wyłącz preferencję MXC według instrukcji poniżej, potem zrestartuj daemon i rozpocznij nową sesję (nie wznawiaj poprzedniej). Repozytorium kursu wybiera profil course-tools.
 - Wykonaj instrukcje [krok po kroku po polsku](course-materials/agent-configs/codex/WINDOWS-QUICKSTART-PL.md). Zawierają też wyjaśnienie profili, testów gh/Context7/Playwright oraz WezTerm.
 - [Raport z pomiaru i konfiguracji dla agentów](course-materials/Research/codex-windows-sandbox-compatibility-2026-11-05.md) opisuje dowody, ograniczenia i procedurę akceptacji.
+- [Sandbox i pytania interaktywne: potwierdzone regresje, diagnoza i ograniczenia](course-materials/Research/codex-sandbox-facts-and-limitations-2026-11-06.md).
 - Używaj wyłącznie syntetycznych danych; domyślny profil nie blokuje systemowo odczytu plików .env w workspace.
 
 ## Po dniu 2 (5.11)
@@ -75,7 +76,7 @@ Codex uruchamiasz w katalogu głównym repozytorium. Przejrzyj komunikat zaufani
 
 `app/` zawiera na razie tylko instrukcję. Podczas zajęć agent utworzy tam aplikację według PRD i ADR; dopiero wtedy instalujemy zależności i uruchamiamy komendy z jej `package.json`. Context7 jest włączony jako źródło dokumentacji (najpierw resolve library ID, potem query docs); Playwright MCP pozostaje wyłączony — ręczny test UI korzysta z Playwright CLI. Role `be-developer`, `fe-developer` i `qa-engineer` dodamy w ćwiczeniu podagentów. Codex czyta konfigurację MCP z `.codex/config.toml`; `.mcp.json` jest przykładem dla Claude Code.
 
-Testy jednostkowe i integracyjne AI SDK korzystają z syntetycznego modelu testowego, bez klucza API. Klucz serwerowy jest potrzebny do rozmowy z prawdziwym modelem i pełnego E2E. `.env.example` zawiera wyłącznie nazwy zmiennych; wartości i sposób ładowania środowiska ustalamy przy konfiguracji aplikacji. Nie wklejaj kluczy do rozmowy z agentem ani do plików śledzonych przez Git.
+Testy jednostkowe i integracyjne AI SDK korzystają z syntetycznego modelu testowego, bez klucza API. Klucz serwerowy jest potrzebny do rozmowy z prawdziwym modelem i pełnego E2E. Przed jego dodaniem sprawdź profil ścisły na fałszywej wartości w dokładnie docelowym pliku; `course-tools` nie chroni plików .env. Serwer z prawdziwym kluczem uruchamiaj z własnego terminala, ponieważ blokada dotyczy też procesów agenta. Do tego momentu korzystaj z modelu testowego. [Procedura](course-materials/agent-configs/codex/WINDOWS-QUICKSTART-PL.md#zanim-dodasz-prawdziwy-klucz-api). `.env.example` zawiera wyłącznie nazwy zmiennych; wartości i sposób ładowania środowiska ustalamy przy konfiguracji aplikacji. Nie wklejaj kluczy do rozmowy z agentem ani do plików śledzonych przez Git.
 
 ## Biblioteka dodatkowa
 

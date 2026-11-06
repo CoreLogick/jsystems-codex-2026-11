@@ -80,10 +80,9 @@ sandbox = "elevated"
 [features]
 # Tested course baseline; MXC requires a separate acceptance run.
 prefer_mxc = false
-# network_proxy stays OFF in a project config. Codex daemon background threads run from ~/.codex
-# and never load this file, so they want different sandbox firewall ports than project threads.
-# On the Windows elevated sandbox every flip re-runs the admin setup: one UAC prompt each, 7-15 per
-# resume (openai/codex#54441). Enable it in ~/.codex/config.toml instead so all threads agree.
+# Keep the proxy OFF in the tested course baseline (project and user settings).
+# If separately needed, validate user-level activation and daemon lifecycle first;
+# project/user proxy mismatches have caused repeated Windows setup (#54441).
 # network_proxy = true # Enforce domain rules when a network-enabled permission profile is selected.
 hooks = true      # Run hooks from hooks.json (see Codex hooks docs)
 apps = true
@@ -117,6 +116,8 @@ enabled = false
 # Context7 (docs context provider) - connect to remote server
 [mcp_servers.context7]
 url = "https://mcp.context7.com/mcp"
+# Optional authenticated access: configure this environment variable first.
+# env_http_headers = { "CONTEXT7_API_KEY" = "CONTEXT7_API_KEY" }
 startup_timeout_sec = 20
 tool_timeout_sec = 60
 enabled = true # Primary library documentation source for the course.
@@ -352,7 +353,7 @@ enabled = true
 [permissions.course-root]
 description = "Compatibility alias for course-workspace; identical strict filesystem and network permissions."
 extends = "course-workspace"
-# This named root preset inherits the default network and filesystem policy.
+# This named root preset inherits course-workspace network and filesystem policy.
 # Logs are available to sandboxed search commands; there is no directory deny.
 
 [permissions.course-review]
@@ -403,4 +404,4 @@ enabled = true
 [permissions.course-jetbrains.network.domains]
 "blog.jetbrains.com" = "allow"
 "www.jetbrains.com" = "allow"
-# Domain rules require [features] network_proxy = true in the user config (see [features] above).
+# Domain rules require a separately activated and validated proxy; the baseline leaves it off.

@@ -46,6 +46,8 @@ To make `course-tools` a user-wide default, merge its profile definition (the ex
 
 `course-tools` enables command networking and has no OS-enforced .env/secrets deny-read rules. Use it for synthetic course data. Selected gh read operations and Playwright open/snapshot/close may run outside the sandbox through allow rules. The browser-open prefix permits arbitrary URLs. Other actions remain subject to sandbox/approval rules; prefix rules are not a complete firewall. Network domain restrictions require an active network proxy, which these examples do not enable.
 
+Covered protected-branch push patterns, their matching gaps and the worktree prompt are described in [PERMISSIONS.md](PERMISSIONS.md#feature-branch-pushes-and-protected-branches); use server-side branch protection for enforcement.
+
 Automatic review is independent of the permission profile: `on-request` + `auto_review` routes eligible approval requests to the reviewer. Allow-rule matches and ordinary sandboxed work do not require an extra review; forbidden rules still block. [Auto-review documentation](https://learn.chatgpt.com/docs/sandboxing/auto-review).
 
 `course-workspace` is strict editing with secret-file denials; `course-root` is its compatibility alias. `course-review` is workspace read-only and `course-docs` allows docs/ writes; inherited temporary directories remain writable. `course-jetbrains` demonstrates a two-host network policy whose enforcement requires a proxy. Only one permission profile is selected at a time.
