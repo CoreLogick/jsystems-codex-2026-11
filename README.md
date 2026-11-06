@@ -1,5 +1,34 @@
 # UPDATES !!!
 
+## Windows Codex sandbox — ważne przed ćwiczeniami (5.11)
+
+- Najpierw ustaw globalny sandbox użytkownika i wyłącz preferencję MXC według instrukcji poniżej, potem zrestartuj daemon i rozpocznij nową sesję (nie wznawiaj poprzedniej). Repozytorium kursu wybiera profil course-tools.
+- Wykonaj instrukcje [krok po kroku po polsku](course-materials/agent-configs/codex/WINDOWS-QUICKSTART-PL.md). Zawierają też wyjaśnienie profili, testów gh/Context7/Playwright oraz WezTerm.
+- [Raport z pomiaru i konfiguracji dla agentów](course-materials/Research/codex-windows-sandbox-compatibility-2026-11-05.md) opisuje dowody, ograniczenia i procedurę akceptacji.
+- [Sandbox i pytania interaktywne: potwierdzone regresje, diagnoza i ograniczenia](course-materials/Research/codex-sandbox-facts-and-limitations-2026-11-06.md).
+- Używaj wyłącznie syntetycznych danych; domyślny profil nie blokuje systemowo odczytu plików .env w workspace.
+
+## Po dniu 2 (5.11)
+
+- Dokumentacja i gałąź implementacji projektu: [PR #6](https://github.com/LucasMatuszewski/jsystems-codex-2026-11/pull/6), gałąź `feature/hardware-service-copilot` - PRD, ADR i plan.
+- Design system x-kom: [PR #3](https://github.com/LucasMatuszewski/jsystems-codex-2026-11/pull/3).
+- Gałąź `main` pozostaje bazą startową kursu z materiałami i aktualizacjami.
+- Dzień 2: [podsumowanie](course-materials/zoom-summary-chat-history/day-2-summary.md) i [historia czatu](course-materials/zoom-summary-chat-history/day-2-chat-history.md).
+- Nowe instrukcje: [formularze pytań i fragment AGENTS.md](course-materials/Research/codex-interactive-questions-2026-11-05.md), [jednorazowa kontynuacja po odnowieniu limitu](course-materials/agent-configs/codex/scheduled-continuation/README.md) oraz [przegląd spójności dokumentów przed implementacją](course-materials/Prompt%20examples/Spec-consistency-review-and-implementation.md).
+- Przykłady konfiguracji Bash i PowerShell używają teraz `micro` jako domyślnego edytora; `zed --wait` pozostaje alternatywą.
+
+- [Fork -> PR -> review -> odpowiedź agenta](course-materials/Research/github-fork-pr-review-workshop-2026-11-05.md): uprawnienia tokenu, Copilot/Codex/Claude i konfiguracja własnego repo. [Ustawienia firmowe: Business workspace, GitHub i Copilot](course-materials/Research/github-code-review-company-settings-2026-11-05.md).
+- [Koszty i historia użycia](course-materials/Research/codex-analytics-and-usage-history-2026-10-14.md), [VS Code/Copilot](course-materials/Research/copilot-vscode-autopilot-permissions-subagents.md), [JetBrains/ACP](course-materials/agent-configs/jetbrains-ai-assistant/README.md) oraz [menedżery agentów](course-materials/Research/agent-managers-and-remote-agents.md). Starsze porównania mają datowane ustawienia; aktualny sposób ACP dopisano w materiale JetBrains.
+- Konta szkoleniowe są przewidziane do ćwiczeń orientacyjnie **do końca listopada**, w ramach dostępnych limitów. Możecie używać tego samego konta także na własnym komputerze; wiadomości z linkiem lub kodem logowania powinny docierać przez włączone przekazywanie poczty. [Oddzielny CODEX_HOME dla konta kursowego](course-materials/agent-configs/codex/separate-course-account/README.md) rozdziela konfigurację, historię i logowanie od konta prywatnego lub firmowego; sam profil `-p` nie przełącza konta.
+
+**Dobra wiadomość: dodatkowe resety limitów Codex!**
+
+- Na moim koncie szkoleniowym pojawiły się **2 pełne resety limitów**. Sprawdźcie komendą `/usage`, czy macie je również u siebie ([opis komendy](https://learn.chatgpt.com/docs/developer-commands?surface=cli)).
+- Opcja **Full reset (Weekly + 5 hr)** odnawia zarówno limit tygodniowy, jak i pięciogodzinny. Warto zachować ją na wyczerpany limit **7-dniowy**.
+- Moja rada: po zwykłym resecie tygodniowym wykorzystajcie dostępną pulę. Jeśli wyczerpiecie ją już po **1-2 dniach**, wtedy użyjcie dodatkowego resetu - może to oszczędzić **5-6 dni czekania** na zwykłe odnowienie.
+- Szkoda zużywać pełny reset tylko po to, żeby odblokować okno **5h**, albo pod koniec tygodnia, gdy do zwykłego resetu zostało **1-2 dni**. Wtedy warto poczekać i zachować go na później ;)
+- Sprawdźcie też **termin ważności** każdego resetu w `/usage`.
+
 ## Po dniu 1 (4.11)
 
 - Projekt zaczniemy od wyboru pomysłu, PRD, ADR i planu; kodu aplikacji jeszcze nie ma.
@@ -49,11 +78,11 @@ git switch -c feat/ai-chat
 codex
 ```
 
-Codex uruchamiasz w katalogu głównym repozytorium. Przejrzyj komunikat zaufania do projektu i zaakceptuj przygotowane repozytorium. Wspólne ustawienia są w `.codex/config.toml`; domyślny profil `course-root` pozwala edytować projekt i korzystać z sieci, w tym instalować zależności. Zarządzana polityka maszyny może dodatkowo ograniczać dostęp.
+Codex uruchamiasz w katalogu głównym repozytorium. Przejrzyj komunikat zaufania do projektu i zaakceptuj przygotowane repozytorium. Wspólne ustawienia są w `.codex/config.toml`; domyślny profil `course-tools` pozwala edytować projekt i korzystać z sieci, w tym instalować zależności. Profil `course-root` zachowuje deny-read jako opcję ścisłą. Zarządzana polityka maszyny może dodatkowo ograniczać dostęp.
 
-`app/` zawiera na razie tylko instrukcję. Podczas zajęć agent utworzy tam aplikację według PRD i ADR; dopiero wtedy instalujemy zależności i uruchamiamy komendy z jej `package.json`. Context7 i Playwright MCP są początkowo wyłączone w konfiguracji Codex. Włączymy je w ćwiczeniu MCP, a role `be-developer`, `fe-developer` i `qa-engineer` dodamy w ćwiczeniu podagentów. Codex czyta konfigurację MCP z `.codex/config.toml`; `.mcp.json` jest przykładem dla Claude Code.
+`app/` zawiera na razie tylko instrukcję. Podczas zajęć agent utworzy tam aplikację według PRD i ADR; dopiero wtedy instalujemy zależności i uruchamiamy komendy z jej `package.json`. Context7 jest włączony jako źródło dokumentacji (najpierw resolve library ID, potem query docs); Playwright MCP pozostaje wyłączony — ręczny test UI korzysta z Playwright CLI. Role `be-developer`, `fe-developer` i `qa-engineer` dodamy w ćwiczeniu podagentów. Codex czyta konfigurację MCP z `.codex/config.toml`; `.mcp.json` jest przykładem dla Claude Code.
 
-Testy jednostkowe i integracyjne AI SDK korzystają z syntetycznego modelu testowego, bez klucza API. Klucz serwerowy jest potrzebny do rozmowy z prawdziwym modelem i pełnego E2E. `.env.example` zawiera wyłącznie nazwy zmiennych; wartości i sposób ładowania środowiska ustalamy przy konfiguracji aplikacji. Nie wklejaj kluczy do rozmowy z agentem ani do plików śledzonych przez Git.
+Testy jednostkowe i integracyjne AI SDK korzystają z syntetycznego modelu testowego, bez klucza API. Klucz serwerowy jest potrzebny do rozmowy z prawdziwym modelem i pełnego E2E. Przed jego dodaniem sprawdź profil ścisły na fałszywej wartości w dokładnie docelowym pliku; `course-tools` nie chroni plików .env. Serwer z prawdziwym kluczem uruchamiaj z własnego terminala, ponieważ blokada dotyczy też procesów agenta. Do tego momentu korzystaj z modelu testowego. [Procedura](course-materials/agent-configs/codex/WINDOWS-QUICKSTART-PL.md#zanim-dodasz-prawdziwy-klucz-api). `.env.example` zawiera wyłącznie nazwy zmiennych; wartości i sposób ładowania środowiska ustalamy przy konfiguracji aplikacji. Nie wklejaj kluczy do rozmowy z agentem ani do plików śledzonych przez Git.
 
 ## Biblioteka dodatkowa
 

@@ -1,3 +1,5 @@
+> **Later course measurement (2026-11-05, Codex CLI 0.166.0):** this October report is historical and does not describe the newly measured course VM configuration. A fresh host PowerShell and actual Codex escalation trial passed with a temporary workspace profile without deny-read; the strict profile failed at sandbox setup. See the [dated compatibility report](codex-windows-sandbox-compatibility-2026-11-05.md) and [Polish participant steps](../agent-configs/codex/WINDOWS-QUICKSTART-PL.md). This evidence does not establish universal MXC instability.
+
 # Codex CLI on Windows: daemon updates, sandbox loops and ignored escalations
 
 *Field report, 15-16 October 2026. Codex CLI 0.162.1 (standalone installer) with the app-server daemon, Windows 11 25H2, using an account without local admin rights. The original field investigation used local session files (`~/.codex/sessions/**/rollout-*.jsonl`), the log database (`~/.codex/logs_2.sqlite`), the sandbox log (`~/.codex/.sandbox/sandbox.<date>.log`) and the openai/codex source and issue tracker.*
